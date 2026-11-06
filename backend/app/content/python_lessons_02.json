@@ -1,0 +1,159 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "variables",
+      "title": "Variables and Data Types",
+      "summary": "Store values in named containers, meet the four core data types, and learn the naming rules.",
+      "objectives": ["Create variables and update their values", "Distinguish int, float, str and bool", "Choose valid, readable variable names"],
+      "sections": [
+        {
+          "heading": "Variables are labeled containers",
+          "body": "A **variable** is a name that refers to a value. Create one with `=`:\n\n```python\nage = 25\nname = \"Ada\"\nprint(name, \"is\", age, \"years old\")\n```\n\nRead `age = 25` as: *store 25 in the box labeled age*. Later, `age + 1` looks up the value and computes 26. You can change (reassign) a variable at any time:\n\n```python\nage = 25\nage = 26   # now age holds 26\n```\n\nThe `=` here means *assignment*, not mathematical equality. It is an instruction: \"make the left name refer to the right value.\""
+        },
+        {
+          "heading": "The four core types",
+          "body": "Every value has a **type**. The four you meet first:\n\n- `int` - whole numbers: `42`, `-7`, `0`\n- `float` - decimal numbers: `3.14`, `-0.5`\n- `str` - text in quotes: `\"hello\"`, `'A'` (strings)\n- `bool` - truth values: `True` and `False`\n\nThe type matters because it decides what operations mean. `\"5\" + \"3\"` is `\"53\"` (gluing text), while `5 + 3` is `8` (math). You can check a value's type with `type(x)` and convert with `int()`, `float()`, `str()`."
+        },
+        {
+          "heading": "Naming rules and style",
+          "body": "Rules: names may contain letters, digits and `_`; they cannot start with a digit; they are case-sensitive (`Age` and `age` are different).\n\nStyle: use short, meaningful, lowercase names: `score`, `user_name`, `total_price`. Avoid single letters except for counters, and never use spaces or hyphens.\n\n`user_name` style (lowercase with underscores) is called *snake_case* and is the Python convention."
+        }
+      ],
+      "example": {
+        "title": "Variables in action",
+        "code": "player_name = \"Ada\"\nscore = 0\nprint(player_name, \"starts with\", score, \"points\")\n\nscore = score + 10\nprint(\"After one round:\", score)\n\nis_winning = score > 5\nprint(\"Is winning?\", is_winning)",
+        "explanation": "`score = score + 10` looks odd at first. Read it right-to-left: look up the current score (0), add 10, store the result back in `score`. Now `score` is 10. The last lines compare score with 5, which produces a bool. Output:\n\n```\nAda starts with 0 points\nAfter one round: 10\nIs winning? True\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "After these lines, what is `total`?\n```python\ntotal = 5\ntotal = total * 2\ntotal = total + 1\n```",
+          "options": ["5", "10", "11", "16"],
+          "answer": 2,
+          "explanation": "Line by line: total is 5, then 5*2 = 10, then 10+1 = 11. Each line reassigns the variable using its current value."
+        },
+        {
+          "id": "q2",
+          "question": "What does `type(\"7\")` return?",
+          "options": ["int", "float", "str", "bool"],
+          "answer": 2,
+          "explanation": "Quotes make it a string, even though the characters look like a number. `type(7)` would be int - the quotes are the difference."
+        }
+      ],
+      "exercise": {
+        "kind": "fill_blank",
+        "title": "Name the container",
+        "prompt": "You want to store a person's age, 25, in a variable called `age`. Complete the line:\n\n```python\n___ = 25\n```",
+        "difficulty": 1,
+        "answer": {"text": "age"},
+        "hints": [
+          "The variable name goes on the left of the `=`; the value on the right.",
+          "Variable names are just written as-is - no quotes, no brackets.",
+          "Type the three letters of the name exactly as asked: age"
+        ],
+        "solution": {"code": "age = 25", "explanation": "In assignment, the new name always goes on the left. `age = 25` creates the variable and stores 25 in it. Names are written without quotes - quotes would make it a string, which is not valid on the left side of `=`."}
+      }
+    },
+    {
+      "slug": "user-input",
+      "title": "User Input",
+      "summary": "Pause your program, ask the user a question, and work safely with what they type.",
+      "objectives": ["Read typed input with input()", "Use a prompt message", "Remember that input() always returns a string"],
+      "sections": [
+        {
+          "heading": "Reading input with input()",
+          "body": "`input()` pauses the program, waits for the user to type something and press Enter, then hands your code what they typed:\n\n```python\nname = input(\"What is your name? \")\nprint(\"Nice to meet you,\", name)\n```\n\nThe text between the brackets is the **prompt** shown to the user. It is good practice to end a prompt with a space so the typing does not hug your question.\n\nIn the CodeTutor Playground there is a *Program input (stdin)* box - whatever you put there is what the program reads as if it were typed."
+        },
+        {
+          "heading": "input() always gives you a string",
+          "body": "Even if the user types `7`, `input()` returns the **string** `\"7\"`, not the number 7. That is why this surprises beginners:\n\n```python\nnumber = input(\"Enter a number: \")   # user types 7\nprint(number * 3)                    # shows 777!\n```\n\nMultiplying a string by 3 repeats it. To do math with input, convert it first - `int(number) * 3` gives 21. The next lesson is all about these conversions.\n\nIf nothing is typed, `input()` returns an empty string `\"\"`."
+        }
+      ],
+      "example": {
+        "title": "A mini conversation",
+        "code": "print(\"Hi! I am a small talk program.\")\nname = input(\"What is your name? \")\nfav = input(\"And your favourite food, \" + name + \"? \")\nprint(\"So, \" + name + \" loves \" + fav + \". Noted!\")",
+        "explanation": "The program greets, asks two questions, and builds a reply using `+` to join (concatenate) strings. Note how the second prompt uses the answer from the first. Sample run:\n\n```\nHi! I am a small talk program.\nWhat is your name? Ada\nAnd your favourite food, Ada? pasta\nSo, Ada loves pasta. Noted!\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "The user runs this and types `42` then presses Enter:\n```python\nanswer = input(\"Number? \")\n```\nWhat type is the value stored in `answer`?",
+          "options": ["int", "str", "float", "bool"],
+          "answer": 1,
+          "explanation": "input() always returns a string - `\"42\"`. To use it as a number you must convert it with int() or float()."
+        },
+        {
+          "id": "q2",
+          "question": "What does this print if the user types `5`?\n```python\nn = input()\nprint(n + n)\n```",
+          "options": ["10", "55", "5 5", "An error"],
+          "answer": 1,
+          "explanation": "\"5\" + \"5\" glues two strings into \"55\". Math requires conversion: int(input()) + int(input()) would give 10."
+        }
+      ],
+      "exercise": {
+        "kind": "predict_output",
+        "title": "Greet with input",
+        "prompt": "The program below runs. In the input box, the user types `Ada` and presses Enter. What exactly does the program print?\n\n```python\nname = input(\"Name: \")\nprint(\"Hi, \" + name + \"!\")\n```",
+        "difficulty": 1,
+        "answer": {"output": "Hi, Ada!"},
+        "hints": [
+          "The prompt text \"Name: \" is shown to the user but NOT printed as part of the result line.",
+          "input() returns exactly what was typed: the string Ada.",
+          "\"Hi, \" + \"Ada\" + \"!\" joins into: Hi, Ada!"
+        ],
+        "solution": {"code": "Hi, Ada!", "explanation": "The prompt inside input() is only a question shown while waiting - it never appears in the output. The program prints the joined string Hi, Ada! - note the comma and the exclamation mark."}
+      }
+    },
+    {
+      "slug": "type-conversion",
+      "title": "Type Conversion",
+      "summary": "Turn strings into numbers and back, so real user input can be used in calculations.",
+      "objectives": ["Convert between str, int, float and bool", "Combine input() with conversion for numeric input", "Recognise a ValueError and why it happens"],
+      "sections": [
+        {
+          "heading": "Why conversion is needed",
+          "body": "Types decide what operations mean. `\"5\" + \"3\"` is `\"53\"` but `5 + 3` is `8`. Since `input()` gives strings, programs that calculate must convert:\n\n```python\nage = int(input(\"Age? \"))\nprint(\"Next year you'll be\", age + 1)\n```\n\nThe conversion functions are:\n\n- `int(\"42\")` → 42, `float(\"3.5\")` → 3.5\n- `str(42)` → \"42\"\n- `bool(0)` → False, `bool(7)` → True"
+        },
+        {
+          "heading": "When conversion fails",
+          "body": "Conversions only work when the value *looks like* the target type:\n\n```python\nint(\"hello\")   # ValueError!\nint(\"3.5\")     # also ValueError - use float(\"3.5\")\nfloat(\"3.5\")   # 3.5, fine\nint(3.9)       # 3 - converting a float TRUNCATES toward zero\n```\n\nA **ValueError** is Python saying: \"that text does not fit the type you asked for.\" It stops the program. In a later lesson you will learn to catch these errors so the program can respond politely instead of crashing."
+        }
+      ],
+      "example": {
+        "title": "A working adding machine",
+        "code": "# Reads two numbers and adds them\na = int(input(\"First number? \"))\nb = int(input(\"Second number? \"))\nprint(\"The sum is\", a + b)",
+        "explanation": "Both answers are converted to int the moment they arrive, so `a + b` does real math. If the user typed `3` and `4`, the output is `The sum is 7`. Compare with the previous lesson: without int(), the same code would print `34`.\n\nNotice the comment at the top - a one-line description of what the program does."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What is the value of `int(\"7\") + 3`?",
+          "options": ["73", "10", "\"10\"", "An error"],
+          "answer": 1,
+          "explanation": "int(\"7\") is the number 7, and 7 + 3 = 10. One conversion fixes both sides of the plus sign."
+        },
+        {
+          "id": "q2",
+          "question": "Which line raises a ValueError when it runs?",
+          "options": ["float(\"1.5\")", "int(\"12\")", "int(\"twelve\")", "str(12)"],
+          "answer": 2,
+          "explanation": "\"twelve\" is text that cannot be read as a number. int(\"12\") and float(\"1.5\") are fine because those strings look numeric."
+        }
+      ],
+      "exercise": {
+        "kind": "mcq",
+        "title": "Fix the adding machine",
+        "prompt": "Your friend writes this program:\n\n```python\na = input(\"A? \")\nb = input(\"B? \")\nprint(a + b)\n```\n\nThe user types `2`, then `3`. The program prints `23` instead of `5`. What is the smallest change that makes it print `5`?",
+        "options": ["Change print(a + b) to print(int(a + b))", "Convert when reading: a = int(input(\"A? \")) and the same for b", "Add 0 to a and b in the print", "Nothing - Python should add numbers automatically"],
+        "answer": 1,
+        "hints": [
+          "The values arrive as strings, and + on strings joins them.",
+          "You need the values to be numbers BEFORE the addition happens.",
+          "Wrapping each input in int() turns \"2\" and \"3\" into 2 and 3, so + adds: int(input(\"A? \"))"
+        ],
+        "solution": {"code": "a = int(input(\"A? \"))\nb = int(input(\"B? \"))\nprint(a + b)", "explanation": "The values must be numbers at the moment + runs. Converting inside print - int(a + b) - would try to convert the string \"23\", which happens to work here, but fails the moment the user types decimals; converting on input is the correct, general fix."}
+      }
+    }
+  ]
+}

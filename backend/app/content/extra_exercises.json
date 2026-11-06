@@ -1,0 +1,179 @@
+{
+  "course_slug": "python",
+  "exercises": [
+    {
+      "slug": "practice-string-slice",
+      "kind": "predict_output",
+      "title": "Slice this string",
+      "prompt": "What does this program print?\n\n```python\nword = \"programming\"\nprint(word[0:3], word[-3:], len(word))\n```",
+      "difficulty": 1,
+      "answer": {"output": "pro ing 11"},
+      "hints": [
+        "Slices include the start index but exclude the end index - and negative indexes count from the end.",
+        "word[0:3] takes characters 0, 1, 2. word[-3:] takes the last three characters. len counts all characters.",
+        "word[0:3] is \"pro\", the last three letters of \"programming\" are \"ing\", and the word has 11 letters."
+      ],
+      "solution": {"code": "pro ing 11", "explanation": "Slicing uses start-inclusive, end-exclusive bounds: word[0:3] is \"pro\". A slice with only an end bound on the negative side, word[-3:], grabs from the third-to-last character to the end: \"ing\". len(\"programming\") is 11. print joins the three values with single spaces: pro ing 11"}
+    },
+    {
+      "slug": "practice-even-or-odd",
+      "kind": "write_program",
+      "title": "Even or odd",
+      "prompt": "Write a function `is_even(n)` that returns True when n is even and False when it is odd. Use the modulo operator %.",
+      "difficulty": 1,
+      "starter_code": "def is_even(n):\n    pass\n\nprint(is_even(4))",
+      "test_spec": {"type": "function", "tests": [{"call": "is_even(4)", "expected": "True"}, {"call": "is_even(7)", "expected": "False"}, {"call": "is_even(0)", "expected": "True"}, {"call": "is_even(-2)", "expected": "True"}, {"call": "is_even(-3)", "expected": "False"}]},
+      "hints": [
+        "A number is even when dividing it by 2 leaves no remainder.",
+        "The modulo operator gives that remainder: n % 2.",
+        "Return the comparison itself: return n % 2 == 0 (a bool - no if needed)."
+      ],
+      "solution": {"code": "def is_even(n):\n    return n % 2 == 0", "explanation": "n % 2 is 0 for even numbers and 1 for odd ones - including negatives (-2 % 2 is 0, -3 % 2 is 1 in Python). Comparing it to 0 produces exactly the True/False the function must return, so you can return the comparison directly instead of writing an if statement."}
+    },
+    {
+      "slug": "practice-sum-loop",
+      "kind": "write_program",
+      "title": "Sum a list",
+      "prompt": "Write a function `sum_list(numbers)` that returns the total of all values in the list, WITHOUT using the built-in sum(). Use a loop and a tracker variable. For an empty list return 0.",
+      "difficulty": 1,
+      "starter_code": "def sum_list(numbers):\n    total = 0\n    # loop and accumulate\n    return total\n\nprint(sum_list([1, 2, 3]))",
+      "test_spec": {"type": "function", "tests": [{"call": "sum_list([1, 2, 3])", "expected": "6"}, {"call": "sum_list([10, -4, 2])", "expected": "8"}, {"call": "sum_list([])", "expected": "0"}, {"call": "sum_list([5])", "expected": "5"}]},
+      "hints": [
+        "The tracker is total - already initialized to 0 for you, which also handles the empty list.",
+        "for n in numbers: - then add each n to total inside the loop.",
+        "total = total + n (or total += n) inside the loop; return total after it."
+      ],
+      "solution": {"code": "def sum_list(numbers):\n    total = 0\n    for n in numbers:\n        total += n\n    return total", "explanation": "The accumulate pattern: initialize the tracker to 0 before the loop, add each item inside it, return at the end. An empty list simply skips the loop, and the initial 0 is returned - the correct answer by construction."}
+    },
+    {
+      "slug": "practice-while-off-by-one",
+      "kind": "find_bug",
+      "title": "The off-by-one countdown",
+      "prompt": "This program should print 3, 2, 1 - each on its own line - and then stop. Instead it prints 3, 2, 1 AND one extra unwanted line `0`. Which line causes it?\n\n```python\n1: n = 3\n2: while n >= 0:\n3:     print(n)\n4:     n = n - 1\n5: print(\"Done\")\n```",
+      "difficulty": 2,
+      "answer": {"line": 2},
+      "hints": [
+        "Trace the loop by hand with a table: what values does n take, and which ones pass the condition?",
+        "The loop prints n for every value that satisfies the while condition. Which extra value still satisfies it?",
+        "n = 0 passes the test 0 >= 0, so 0 gets printed too. The condition should stop one step earlier."
+      ],
+      "solution": {"code": "while n > 0:", "explanation": "The condition n >= 0 lets n reach 0 and print it. Changing line 2 to n > 0 stops the loop after printing 1: 3, 2, 1, then Done. This is the classic off-by-one bug - the boundary of a loop or range is off by exactly one."}
+    },
+    {
+      "slug": "practice-dict-count",
+      "kind": "write_program",
+      "title": "Letter counter",
+      "prompt": "Write a function `count_letters(text)` that returns a dict mapping each letter (lowercase) to how many times it appears in text. Ignore non-letters and case. Example: `count_letters(\"aAb!\")` returns `{\"a\": 2, \"b\": 1}`.",
+      "difficulty": 3,
+      "starter_code": "def count_letters(text):\n    counts = {}\n    # for each character: lowercase it, skip non-letters, update counts\n    return counts\n\nprint(count_letters(\"aAb!\"))",
+      "test_spec": {"type": "function", "tests": [{"call": "count_letters('aAb!')", "expected": "{'a': 2, 'b': 1}"}, {"call": "count_letters('Hi! hi?')", "expected": "{'h': 2, 'i': 2}"}, {"call": "count_letters('')", "expected": "{}"}, {"call": "count_letters('123')", "expected": "{}"}]},
+      "hints": [
+        "Loop over each character; ch.lower() normalizes the case and ch.isalpha() tells letters apart from digits and punctuation.",
+        "For each letter: if it is already a key in counts, add 1 to it; if not, create it starting at 1.",
+        "counts[letter] = counts.get(letter, 0) + 1 handles both cases in one line - .get returns 0 for unseen letters."
+      ],
+      "solution": {"code": "def count_letters(text):\n    counts = {}\n    for ch in text:\n        if ch.isalpha():\n            letter = ch.lower()\n            counts[letter] = counts.get(letter, 0) + 1\n    return counts", "explanation": "The counting-dict pattern: skip what you do not count (isalpha), normalize (lower), then counts.get(letter, 0) + 1 reads the current count (defaulting to 0 for new letters) and writes it back one higher. Dictionaries are built exactly for this kind of name-to-value accumulation."}
+    },
+    {
+      "slug": "practice-reverse-string",
+      "kind": "predict_output",
+      "title": "Slicing backwards",
+      "prompt": "What does this program print?\n\n```python\ns = \"python\"\nprint(s[::-1])\nprint(s[::2])\n```",
+      "difficulty": 2,
+      "answer": {"output": "nohtyp\npto"},
+      "hints": [
+        "A slice accepts start:end:step - and any part can be empty.",
+        "A negative step walks the string backwards; a step of 2 takes every second character.",
+        "s[::-1] is the whole string reversed: nohtyp. s[::2] takes indexes 0, 2, 4: p, t, o."
+      ],
+      "solution": {"code": "nohtyp\npto", "explanation": "The third slice number is the step. With empty start and end and step -1, s[::-1] visits every character from the last to the first: \"nohtyp\" - the idiomatic Python string reversal. With step 2, s[::2] takes every second character starting at index 0: p, t, o -> \"pto\"."}
+    },
+    {
+      "slug": "practice-temperature",
+      "kind": "write_program",
+      "title": "Temperature classifier",
+      "prompt": "Write a function `describe_temp(celsius)` that returns `\"hot\"` above 30, `\"warm\"` from 20 up to and including 30, `\"cool\"` from 10 up to and including 19, and `\"cold\"` below 10. Order your checks so every value lands in exactly one bucket.",
+      "difficulty": 2,
+      "starter_code": "def describe_temp(celsius):\n    pass\n\nprint(describe_temp(25))",
+      "test_spec": {"type": "function", "tests": [{"call": "describe_temp(35)", "expected": "'hot'"}, {"call": "describe_temp(30)", "expected": "'warm'"}, {"call": "describe_temp(20)", "expected": "'warm'"}, {"call": "describe_temp(15)", "expected": "'cool'"}, {"call": "describe_temp(10)", "expected": "'cool'"}, {"call": "describe_temp(2)", "expected": "'cold'"}]},
+      "hints": [
+        "Three or more exclusive ranges call for if / elif / elif / else.",
+        "Order matters: check the highest range first (celsius > 30), then the next (celsius >= 20), and so on - each elif only runs when the previous checks failed.",
+        "if celsius > 30: return \"hot\" ... elif celsius >= 20: return \"warm\" ... elif celsius >= 10: return \"cool\" ... else: return \"cold\""
+      ],
+      "solution": {"code": "def describe_temp(celsius):\n    if celsius > 30:\n        return \"hot\"\n    elif celsius >= 20:\n        return \"warm\"\n    elif celsius >= 10:\n        return \"cool\"\n    else:\n        return \"cold\"", "explanation": "Checked from most specific to least, each boundary value lands exactly once: 30 fails the first check (> 30 is false) and matches the second. Because elif only runs when earlier conditions were false, no value can fall into two buckets, and the else catches everything below 10."}
+    },
+    {
+      "slug": "practice-tuple-swap",
+      "kind": "mcq",
+      "title": "Multiple assignment",
+      "prompt": "What does this program print?\n\n```python\na = 1\nb = 2\na, b = b, a + b\nprint(a, b)\n```",
+      "options": ["1 2", "2 3", "2 1", "3 3"],
+      "answer": {"index": 1},
+      "hints": [
+        "The right side is evaluated COMPLETELY first, then assigned to the names on the left.",
+        "Before any assignment happens, b is 2 and a + b is 1 + 2 = 3.",
+        "So a receives the old b (2) and b receives the old a + b (3): prints 2 3"
+      ],
+      "solution": {"code": "", "explanation": "Python packs the right side into a tuple (2, 3) first - both values computed with the OLD a and b - and only then unpacks them into a and b. This is why a, b = b, a swaps values without a temporary variable. Output: 2 3"}
+    },
+    {
+      "slug": "practice-find-bug-string",
+      "kind": "find_bug",
+      "title": "The unchanged name",
+      "prompt": "This program should print `Ada` in uppercase, but it prints `Ada` unchanged. Which line contains the bug?\n\n```python\n1: name = \"ada\"\n2: name.upper()\n3: print(name)\n```",
+      "difficulty": 1,
+      "answer": {"line": 2},
+      "hints": [
+        "Strings are immutable - no method can change them in place.",
+        "name.upper() creates a NEW string... and then what happens to it?",
+        "The uppercase result is discarded because it was never assigned anywhere."
+      ],
+      "solution": {"code": "name = name.upper()", "explanation": "Line 2 calls upper() and throws the result away - name is never modified because strings cannot be. The fix is to capture the returned string: name = name.upper(). This immutability pattern applies to every string method: strip(), lower(), replace() all return new strings."}
+    },
+    {
+      "slug": "practice-fizzbuzz",
+      "kind": "write_program",
+      "title": "Mini FizzBuzz",
+      "prompt": "Write a function `fizzbuzz(n)` that returns `\"fizz\"` if n is divisible by 3, `\"buzz\"` if n is divisible by 5, `\"fizzbuzz\"` if divisible by both, and otherwise returns the number itself as a string (e.g. `\"7\"`).",
+      "difficulty": 3,
+      "starter_code": "def fizzbuzz(n):\n    pass\n\nprint(fizzbuzz(15))",
+      "test_spec": {"type": "function", "tests": [{"call": "fizzbuzz(15)", "expected": "'fizzbuzz'"}, {"call": "fizzbuzz(9)", "expected": "'fizz'"}, {"call": "fizzbuzz(10)", "expected": "'buzz'"}, {"call": "fizzbuzz(7)", "expected": "'7'"}, {"call": "fizzbuzz(30)", "expected": "'fizzbuzz'"}]},
+      "hints": [
+        "Check the combined case FIRST - if you check divisible-by-3 first, 15 would match it and never reach fizzbuzz.",
+        "n % 3 == 0 and n % 5 == 0 detects the both case; order it before the single checks.",
+        "For the default case, remember to convert: return str(n) - numbers and strings must not be mixed."
+      ],
+      "solution": {"code": "def fizzbuzz(n):\n    if n % 3 == 0 and n % 5 == 0:\n        return \"fizzbuzz\"\n    elif n % 3 == 0:\n        return \"fizz\"\n    elif n % 5 == 0:\n        return \"buzz\"\n    else:\n        return str(n)", "explanation": "The order of checks is the whole puzzle: the both-at-once condition is the most specific, so it must come first, or divisible-by-3 would swallow 15 and print just fizz. The else branch converts the number to a string so the function always returns the same type. FizzBuzz is the classic interview warm-up exactly because the ordering mistake is so seductive."}
+    },
+    {
+      "slug": "practice-password-len",
+      "kind": "write_program",
+      "title": "Password strength",
+      "prompt": "Write a function `password_strength(password)` that returns `\"weak\"` for passwords shorter than 6 characters, `\"ok\"` for 6-9 characters, and `\"strong\"` for 10 or more. Length only - no other rules.",
+      "difficulty": 1,
+      "starter_code": "def password_strength(password):\n    pass\n\nprint(password_strength(\"secret123\"))",
+      "test_spec": {"type": "function", "tests": [{"call": "password_strength('abc')", "expected": "'weak'"}, {"call": "password_strength('abcdef')", "expected": "'ok'"}, {"call": "password_strength('abcdefghij')", "expected": "'strong'"}, {"call": "password_strength('123456789')", "expected": "'ok'"}]},
+      "hints": [
+        "len() measures strings; compare its result against the boundaries.",
+        "Three ranges: len < 6, len < 10 (after the first check failed), and the rest.",
+        "if len(password) < 6: return \"weak\" elif len(password) < 10: return \"ok\" else: return \"strong\""
+      ],
+      "solution": {"code": "def password_strength(password):\n    if len(password) < 6:\n        return \"weak\"\n    elif len(password) < 10:\n        return \"ok\"\n    else:\n        return \"strong\"", "explanation": "Once the first check fails, the password is at least 6 long - so the second check only needs to test the upper bound (< 10). Each branch handles one range, and no range can overlap. Reading conditions as a waterfall (each one assumes the previous failed) keeps validation logic short and airtight."}
+    },
+    {
+      "slug": "practice-nested-loop",
+      "kind": "predict_output",
+      "title": "Nested loops",
+      "prompt": "What does this program print in total? (Count the lines carefully.)\n\n```python\nfor i in range(2):\n    for j in range(3):\n        print(i, j)\n```",
+      "difficulty": 2,
+      "answer": {"output": "0 0\n0 1\n0 2\n1 0\n1 1\n1 2"},
+      "hints": [
+        "The outer loop runs 2 times; for EACH of those, the inner loop runs 3 times.",
+        "The total number of prints is 2 * 3 = 6 - write them in order: outer value stays fixed while the inner one runs.",
+        "With i = 0: j is 0, 1, 2. Then with i = 1: j is 0, 1, 2 again."
+      ],
+      "solution": {"code": "0 0\n0 1\n0 2\n1 0\n1 1\n1 2", "explanation": "Nested loops multiply: the inner loop completes ALL its rounds for each single round of the outer loop - 2 x 3 = 6 lines. The outer variable is fixed while the inner sweeps 0, 1, 2, then the outer advances and the inner sweeps again. This pattern drives grids, tables and every 'for each row, for each column' problem."}
+    }
+  ]
+}

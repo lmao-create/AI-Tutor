@@ -1,0 +1,167 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "functions",
+      "title": "Functions and Parameters",
+      "summary": "Package code under a name so you can reuse it: define functions, pass information in, and keep programs organized.",
+      "objectives": ["Define and call functions", "Pass information through parameters", "Give parameters default values", "Understand docstrings"],
+      "sections": [
+        {
+          "heading": "Why functions exist",
+          "body": "Suppose you greet three users with three slightly different print statements. Now suppose the greeting needs an emoji added - you have to fix it in three places, and you will forget one. Functions fix this: you write the recipe **once**, name it, and reuse it everywhere:\n\n```python\ndef greet(name):\n    print(\"Hello, \" + name + \"!\")\n\ngreet(\"Ada\")\ngreet(\"Grace\")\n```\n\n`def` starts the definition, `greet` is the name you choose, and `(name)` is a **parameter**: a placeholder that receives a value when the function is called. The call `greet(\"Ada\")` makes `name` refer to `\"Ada\"` while the body runs.\n\nLike if-blocks, the body must be indented, and the def line ends with a colon."
+        },
+        {
+          "heading": "Parameters: one or many",
+          "body": "Functions can accept several values, in order, separated by commas:\n\n```python\ndef introduce(name, age):\n    print(f\"I'm {name}, age {age}.\")\n\nintroduce(\"Ada\", 36)\n```\n\nThe order of arguments at the call must match the parameters. You can also name them explicitly, which reads nicely on long lists: `introduce(age=36, name=\"Ada\")` works even out of order.\n\nParameters can have **defaults**, making them optional at the call:\n\n```python\ndef greet(name, punctuation=\"!\"):\n    print(\"Hello, \" + name + punctuation)\n\ngreet(\"Ada\")              # Hello, Ada!\ngreet(\"Grace\", \"?\")       # Hello, Grace?\n```\n\nOnce a parameter has a default, every parameter after it must have one too."
+        },
+        {
+          "heading": "Docstrings",
+          "body": "A string as the first line of a function is its **docstring** - documentation Python keeps with the code:\n\n```python\ndef area(width, height):\n    \"\"\"Return the area of a rectangle.\"\"\"\n    return width * height\n```\n\nGood habit: one line saying what the function does, and what it expects. Future-you will thank present-you."
+        }
+      ],
+      "example": {
+        "title": "A tiny menu printer",
+        "code": "def print_menu(title, items, bullet=\"-\"):\n    \"\"\"Print a titled list of menu items.\"\"\"\n    print(f\"== {title} ==\")\n    for item in items:\n        print(f\"{bullet} {item}\")\n\nprint_menu(\"Breakfast\", [\"eggs\", \"toast\", \"coffee\"])\nprint_menu(\"Extras\", [\"juice\", \"tea\"], bullet=\"*\")",
+        "explanation": "The function bundles a loop, a title format and a customizable bullet into one reusable unit. The first call uses the default bullet, the second overrides it. This is the core idea of functions: encode a *pattern* once, then vary the details per call. Output:\n\n```\n== Breakfast ==\n- eggs\n- toast\n- coffee\n== Extras ==\n* juice\n* tea\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does this print?\n```python\ndef double(n):\n    print(n * 2)\n\ndouble(3)\ndouble(10)\n```",
+          "options": ["6", "6 then 20", "30", "An error - n is not defined"],
+          "answer": 1,
+          "explanation": "Each call runs the body with the given value: 3*2 prints 6, then 10*2 prints 20. The parameter n is created fresh for each call."
+        },
+        {
+          "id": "q2",
+          "question": "Given `def greet(name, punct=\"!\"):`, which call is INVALID?",
+          "options": ["greet(\"Ada\")", "greet(\"Ada\", \"?\")", "greet()", "greet(punct=\"?\", name=\"Ada\")"],
+          "answer": 2,
+          "explanation": "name has no default, so every call must supply it. greet() raises a TypeError about the missing required argument."
+        }
+      ],
+      "exercise": {
+        "kind": "fill_blank",
+        "title": "Complete the function",
+        "prompt": "This function should greet a person by name. Fill in the missing keyword on the last line of its body:\n\n```python\ndef greet(name):\n    ___ \"Hello, \" + name\n\nmessage = greet(\"Ada\")\nprint(message)\n```",
+        "difficulty": 1,
+        "answer": {"text": "return"},
+        "hints": [
+          "For greet(\"Ada\") to produce \"Hello, Ada\", the function must hand that value back - printing inside is not enough.",
+          "There is exactly one keyword that sends a value back to the caller.",
+          "return \"Hello, \" + name"
+        ],
+        "solution": {"code": "def greet(name):\n    return \"Hello, \" + name", "explanation": "return sends the value back so it can be stored in `message` and printed. Without return, greet() would compute the string and silently drop it - message would be None. (That exact mistake is the next lesson's topic.)"}
+      }
+    },
+    {
+      "slug": "return-values",
+      "title": "Return Values",
+      "summary": "Get results out of functions instead of only printing them - and understand None, the 'nothing' value.",
+      "objectives": ["Return values and use them in expressions", "Distinguish printing from returning", "Know what a missing return produces", "Return early for validation"],
+      "sections": [
+        {
+          "heading": "print vs return",
+          "body": "This is the most important distinction in this whole course:\n\n- **print** shows a value to a human. The value is gone after.\n- **return** hands the value back to the code. It can be stored, combined, reused.\n\n```python\ndef add_print(a, b):\n    print(a + b)      # shows, but the caller gets NOTHING\n\ndef add(a, b):\n    return a + b      # caller receives the value\n\nresult = add(2, 3)   # result is 5\nresult = add_print(2, 3)   # prints 5, but result is None!\n```\n\nA function without an explicit return returns **None** - Python's \"nothing here\" value. Printing `None` literally shows `None`.\n\nRule of thumb: functions that *compute* return; functions that only *display* print. Build small returning functions and print once at the end - that is how testable programs are written (the exercise grader checks return values, not printed text)."
+        },
+        {
+          "heading": "Returning early",
+          "body": "return exits the function **immediately** - no line after it runs. That makes validation clean:\n\n```python\ndef safe_divide(a, b):\n    if b == 0:\n        return None      # refuse, leave early\n    return a / b\n```\n\nOne return per branch reads clearly. The test for the bad case comes first, so the rest of the function can assume the input is sane."
+        },
+        {
+          "heading": "Multiple values at once",
+          "body": "return can hand back several values as a tuple, which you unpack into separate names:\n\n```python\ndef min_max(numbers):\n    return min(numbers), max(numbers)\n\nlow, high = min_max([3, 1, 4])   # low = 1, high = 4\n```\n\nPython also has built-in returning functions you have already used: `len()`, `max()`, `int()`, `input()`."
+        }
+      ],
+      "example": {
+        "title": "A function that computes vs one that reports",
+        "code": "def celsius_to_f(c):\n    \"\"\"Return the Fahrenheit equivalent of a Celsius temperature.\"\"\"\n    return c * 9 / 5 + 32\n\n# Reuse the returned value in many ways\ntoday = celsius_to_f(20)\nprint(f\"Today: {today}F\")\nprint(\"Yesterday:\", celsius_to_f(15))\nprint(\"Boiling:\", celsius_to_f(100))\nprint(\"Twice today:\", today * 2)",
+        "explanation": "Because the function RETURNS, its result can be stored in `today`, printed directly, or used inside another expression (today * 2). If it had printed instead, none of this would be possible - printing is a dead end. Output:\n\n```\nToday: 68.0F\nYesterday: 59.0\nBoiling: 212.0\nTwice today: 136.0\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does this print?\n```python\ndef f(n):\n    print(n + 1)\n\nx = f(4)\nprint(x)\n```",
+          "options": ["5", "5 then None", "None then 5", "An error"],
+          "answer": 1,
+          "explanation": "Inside f, 5 is printed. But f has no return, so x receives None - and the second print shows None. Both lines run: '5' then 'None'."
+        },
+        {
+          "id": "q2",
+          "question": "Which function's result can be used in an expression like `y = f(2) * 10`?",
+          "options": ["def f(n): print(n * 10)", "def f(n): return n * 10", "Both work identically", "Neither - functions cannot be used in expressions"],
+          "answer": 1,
+          "explanation": "Only the returning version produces a value. With the printing version, y would be None * 10 - a TypeError."
+        }
+      ],
+      "exercise": {
+        "kind": "find_bug",
+        "title": "The None result",
+        "prompt": "A student writes this program to double a number, but it prints `None` instead of `10`. Which line contains the bug?\n\n```python\n1: def double(n):\n2:     print(n * 2)\n3:\n4: result = double(5)\n5: print(result)\n```",
+        "difficulty": 2,
+        "answer": {"line": 2},
+        "hints": [
+          "Trace what double(5) actually hands back to line 4.",
+          "The function shows 10 on screen... but showing is not the same as giving back.",
+          "Line 2 displays the value instead of returning it. Line 4 then receives None, which line 5 prints."
+        ],
+        "solution": {"code": "def double(n):\n    return n * 2", "explanation": "The bug is printing instead of returning. `print(n * 2)` shows 10 but gives the caller None, so `result` is None. Changing line 2 to `return n * 2` makes double(5) hand back 10, and the program prints 10. Remember: return feeds the program, print feeds the human."}
+      }
+    },
+    {
+      "slug": "scope",
+      "title": "Scope",
+      "summary": "Where does a variable live? Learn the difference between local and global names, and the one rule that keeps this simple.",
+      "objectives": ["Explain local vs global scope", "Predict which names a function can see and modify", "Apply the rule: functions take inputs via parameters, not globals"],
+      "sections": [
+        {
+          "heading": "Locals are private to the function",
+          "body": "Variables created **inside** a function are **local**: they exist only while that function runs, and vanish when it returns.\n\n```python\ndef report():\n    topic = \"scope\"      # local - born inside\n    print(\"Learning\", topic)\n\nreport()\nprint(topic)             # NameError! topic no longer exists\n```\n\nEach call gets fresh locals. That is a feature: two functions can both use a variable named `result` without colliding."
+        },
+        {
+          "heading": "Globals are readable from anywhere",
+          "body": "Variables created at the top level of the file are **global**, and functions *can read* them:\n\n```python\nunit = \"km\"\n\ndef show(distance):\n    print(distance, unit)    # reads the global fine\n\nshow(42)                    # 42 km\n```\n\nBut **assigning** to a name inside a function creates a new *local* instead of changing the global:\n\n```python\nscore = 0\n\ndef add_point():\n    score = 100      # local! the global is untouched\n\nadd_point()\nprint(score)         # still 0\n```\n\nPython has a `global` keyword to override this - avoid it. Relying on globals makes functions fragile: the reader cannot see where data comes from, and tests become impossible."
+        },
+        {
+          "heading": "The one rule to remember",
+          "body": "**Data flows in through parameters and out through return values.** A well-written function is a sealed machine: inputs in brackets, output after `return`, and no reaching out to grab (or worse, change) outside names.\n\nWhen every function works like this, you can read and test each one in isolation - which is exactly what the exercise grader does with your functions."
+        }
+      ],
+      "example": {
+        "title": "Sealed vs leaky functions",
+        "code": "counter = 0\n\ndef leaky():\n    global counter\n    counter = counter + 1      # reaches outside - fragile\n    return counter\n\ndef sealed(count):\n    return count + 1           # everything it needs arrives as input\n\nleaky()\nleaky()\nprint(\"After leaky calls:\", counter)\n\nprint(\"sealed(41):\", sealed(41))\nprint(\"sealed again with 41:\", sealed(41))   # same input, same output, no surprises",
+        "explanation": "`leaky` works but its result depends on invisible outside state - you cannot understand the call `leaky()` without knowing what counter is. `sealed(41)` always returns 42, no matter when or where it runs. Prefer sealed functions: parameters in, return out. Output:\n\n```\nAfter leaky calls: 2\nsealed(41): 42\nsealed again with 41: 42\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does this print?\n```python\ndef bump(x):\n    x = x + 1\n    return x\n\nn = 5\nbump(n)\nprint(n)\n```",
+          "options": ["6", "5", "None", "An error"],
+          "answer": 1,
+          "explanation": "The parameter x receives 5, and x = x + 1 reassigns the local x to 6 and returns it - but n itself is never changed. Since the return value is ignored, n stays 5."
+        },
+        {
+          "id": "q2",
+          "question": "Why is using many global variables inside functions considered bad practice?",
+          "options": ["It is slower", "You cannot read globals at all", "Functions become dependent on invisible outside state - hard to read, test and reuse", "Globals use more memory"],
+          "answer": 2,
+          "explanation": "A function that reads or changes globals cannot be understood or tested by looking at the function alone. Parameters + return values keep every dependency visible in the signature."
+        }
+      ],
+      "exercise": {
+        "kind": "predict_output",
+        "title": "The disappearing variable",
+        "prompt": "What does this program print in total? (Two lines are printed.)\n\n```python\ndef make_name():\n    hero = \"Ada\"\n    return hero\n\nname = make_name()\nprint(name)\nprint(hero)\n```",
+        "difficulty": 3,
+        "answer": {"output": "Ada\nNameError"},
+        "hints": [
+          "Think about what each print can actually see. The first one is fine - what does make_name hand back?",
+          "The variable created INSIDE make_name lives only while the function runs. Calling it returns the value, not the variable.",
+          "Answer with exactly two lines: the text the first print produces, then the NAME of the error type Python raises (one word, CamelCase) - nothing else."
+        ],
+        "solution": {"code": "Ada\nNameError", "explanation": "`hero` is local to make_name: it is created at call time and destroyed when the function returns. The VALUE survives because it is returned and stored in `name`, so the first print shows Ada. The second print references the name `hero` directly, which does not exist outside the function - NameError. (The real program output would be the word Ada, then a traceback containing NameError - for this exercise, answering the two lines' content like this is accepted.)"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "oop",
+      "title": "Object-Oriented Programming",
+      "summary": "Design your own data types: bundle data and behavior together with classes and objects.",
+      "objectives": ["Define a class with an __init__ constructor", "Create objects and use their attributes", "Write methods, including __str__", "Understand inheritance with a subclass"],
+      "sections": [
+        {
+          "heading": "Classes are blueprints",
+          "body": "A **class** describes a kind of thing - a Dog, a BankAccount, a QuizQuestion. An **object** is one actual thing built from that blueprint. This groups *data* (attributes) with the *behavior* that uses it (methods):\n\n```python\nclass Dog:\n    def __init__(self, name, age):\n        self.name = name     # attribute: each dog has its own\n        self.age = age\n\n    def bark(self):\n        return self.name + \" says Woof!\"\n```\n\nCreating an object is called **instantiation**: `rex = Dog(\"Rex\", 3)` builds one dog. `rex.name` reads its attribute; `rex.bark()` calls its method.\n\nThe odd-looking `self` is simply the object the method is working on. Python passes it automatically - you never send it yourself: `rex.bark()` runs `bark(self=rex)`."
+        },
+        {
+          "heading": "__init__ and __str__",
+          "body": "`__init__` is the **constructor**: it runs automatically at creation time and sets up the new object's starting state. `d = Dog(\"Rex\", 3)` calls `Dog.__init__(d, \"Rex\", 3)`.\n\n`__str__` decides what `print(object)` and `str(object)` show - very handy for debugging:\n\n```python\nclass Dog:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def __str__(self):\n        return f\"Dog({self.name}, {self.age})\"\n\nprint(Dog(\"Rex\", 3))   # Dog(Rex, 3)\n```\n\nMethods with double underscores like these are called **dunder** methods - hooks Python calls at special moments."
+        },
+        {
+          "heading": "Inheritance: building on a base",
+          "body": "A class can extend another, inheriting its attributes and methods:\n\n```python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return self.name + \" makes a sound\"\n\nclass Cat(Animal):\n    def speak(self):              # override with a better version\n        return self.name + \" says Meow\"\n```\n\n`Animal` is the **parent** (base class); `Cat` is the **child** (subclass). The child reuses everything and specializes what differs. Inheritance is for genuine \"is-a\" relationships: a Cat **is an** Animal. Start small: simple classes with clear `__init__` and two or three methods cover most real needs."
+        }
+      ],
+      "example": {
+        "title": "A bank account class",
+        "code": "class BankAccount:\n    def __init__(self, owner, balance=0):\n        self.owner = owner\n        self.balance = balance\n\n    def deposit(self, amount):\n        if amount <= 0:\n            raise ValueError(\"deposit must be positive\")\n        self.balance = self.balance + amount\n        return self.balance\n\n    def withdraw(self, amount):\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance = self.balance - amount\n        return self.balance\n\n    def __str__(self):\n        return f\"{self.owner}: ${self.balance}\"\n\nacc = BankAccount(\"Ada\", 100)\nacc.deposit(50)\nprint(acc)\nacc.withdraw(30)\nprint(acc)",
+        "explanation": "The class enforces its own rules: deposits must be positive, withdrawals cannot exceed the balance. Calling code just says WHAT it wants (`acc.deposit(50)`); the object decides HOW and protects its state. Output:\n\n```\nAda: $150\nAda: $120\n```\n\nThat encapsulation - data plus the rules guarding it - is the real reason for OOP, not just grouping things together."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does `self` refer to inside a method?",
+          "options": ["The class itself", "The specific object the method was called on", "The file the class is in", "A reserved global variable"],
+          "answer": 1,
+          "explanation": "self is the instance. rex.bark() and fido.bark() run the same code but with different self objects, so self.name is Rex or Fido respectively."
+        },
+        {
+          "id": "q2",
+          "question": "When does `__init__` run?",
+          "options": ["When the class is defined", "Automatically, every time you create an object from the class", "Only when you call it yourself", "When the program ends"],
+          "answer": 1,
+          "explanation": "Dog(\"Rex\", 3) constructs a new object and immediately calls __init__ on it to set up name and age. You never call __init__ directly."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "Build a Counter class",
+        "prompt": "Write a class `Counter` with: an `__init__` that starts the count at 0, a method `increment()` that adds 1 and returns the new count, and a method `reset()` that sets the count back to 0 (returning nothing is fine).",
+        "difficulty": 3,
+        "starter_code": "class Counter:\n    def __init__(self):\n        # set the starting count\n        pass\n\n    def increment(self):\n        pass\n\n    def reset(self):\n        pass\n\nc = Counter()\nprint(c.increment())",
+        "test_spec": {"type": "function", "tests": [{"call": "Counter().increment()", "expected": "1"}, {"call": "(lambda: (lambda c: [c.increment(), c.increment(), c.increment()][-1])())()", "expected": "3"}, {"call": "(lambda: (lambda c: (c.increment(), c.increment(), c.reset(), c.increment())[-1])())()", "expected": "1"}]},
+        "hints": [
+          "Store the count on self: self.count = 0 in __init__. Every method receives self - the object being worked on.",
+          "increment should do self.count = self.count + 1 and then return self.count.",
+          "reset sets self.count = 0. For the tests that create, use and return from a Counter in one expression, just make sure increment returns the count and reset zeroes it - the test builds its own object."
+        ],
+        "solution": {"code": "class Counter:\n    def __init__(self):\n        self.count = 0\n\n    def increment(self):\n        self.count += 1\n        return self.count\n\n    def reset(self):\n        self.count = 0", "explanation": "State lives on the object (self.count), and methods are the only way to change it - that is encapsulation in miniature. increment updates and returns the value so callers get feedback; reset simply reassigns 0. The lambda-based tests prove that separate Counter objects work independently and that reset really zeroes the state."}
+      }
+    },
+    {
+      "slug": "algorithms",
+      "title": "Basic Algorithms",
+      "summary": "An algorithm is a recipe for solving a problem. Learn to write and compare your own instead of reaching for built-ins.",
+      "objectives": ["Write a search and a max-finding algorithm from scratch", "Understand what makes one approach better than another", "Build logic step by step with a tracker variable"],
+      "sections": [
+        {
+          "heading": "What an algorithm is",
+          "body": "An **algorithm** is a precise, finite list of steps that solves a problem - not code, but the idea behind it. \"Find the biggest number in a list\" becomes: *look at every number; remember the biggest seen so far.* Translating that into code:\n\n```python\nnumbers = [7, 2, 9, 4]\nbiggest = numbers[0]\nfor n in numbers:\n    if n > biggest:\n        biggest = n\nprint(biggest)   # 9\n```\n\nThe pattern here is the **tracker variable**: initialize before the loop, update inside it. You have already used it for sums (`total += n`) and counting; finding a maximum is the same shape with `if` instead of `+`."
+        },
+        {
+          "heading": "Searching: linear scan",
+          "body": "To find whether a value exists, check items one by one until you find it or run out:\n\n```python\ndef find_index(items, target):\n    for i in range(len(items)):\n        if items[i] == target:\n            return i      # found: leave early with the answer\n    return -1             # exhausted the list: report absence\n```\n\nThis is **linear search** - about n steps for a list of n items. Simple, and it works on any list. (Python's `target in items` does essentially this for you, but writing it once yourself shows what `in` really costs.)\n\nReturning early is an important algorithmic habit: the moment the answer is known, stop working."
+        },
+        {
+          "heading": "Comparing approaches",
+          "body": "Two correct algorithms can differ hugely in effort. Finding a max by sorting the list first also works - `sorted(numbers)[-1]` - but sorting a million numbers to find one value is doing far more work than the single pass above. For a party of 4 friends, sorting is fine; for a city's records, the linear scan wins.\n\nThe skill to build: for each problem, think *what is the minimum work needed?* Then write steps that do no more than that. Later courses formalize this as Big-O notation; today, the intuition is what matters."
+        }
+      ],
+      "example": {
+        "title": "Three tracker classics",
+        "code": "scores = [72, 85, 60, 91, 78]\n\ntotal = 0\nbest = scores[0]\nworst = scores[0]\nfor s in scores:\n    total += s\n    if s > best:\n        best = s\n    if s < worst:\n        worst = s\n\nn = len(scores)\nprint(f\"Average: {total / n}\")\nprint(\"Best:\", best)\nprint(\"Worst:\", worst)\nprint(\"Spread:\", best - worst)",
+        "explanation": "One loop, three trackers - sum, best, worst - all initialized to sensible starting values before the loop and updated each round. Initializing best/worst with the FIRST item (not 0) is the classic detail: with 0, an all-negative list would wrongly report 0 as the max. Output:\n\n```\nAverage: 77.2\nBest: 91\nWorst: 60\nSpread: 31\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "Why initialize `biggest = numbers[0]` instead of `biggest = 0` when finding the maximum?",
+          "options": ["0 is not a number", "With an all-negative list, 0 would beat every item and be wrongly returned", "numbers[0] is faster to type", "It avoids an IndexError"],
+          "answer": 1,
+          "explanation": "The tracker must be a value that can actually lose. If all numbers are negative, no comparison `n > 0` ever succeeds and the answer would wrongly be 0. Starting with a real item guarantees a correct result."
+        },
+        {
+          "id": "q2",
+          "question": "In the `find_index` search, what is the purpose of `return -1` after the loop?",
+          "options": ["It deletes the item", "It reports that the target was not found - a sentinel value", "It restarts the search", "It raises an error"],
+          "answer": 1,
+          "explanation": "The function must signal absence somehow; -1 is a conventional sentinel because no real index is negative. The early return inside the loop handles the found case."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "Find the maximum without max()",
+        "prompt": "Write a function `find_max(numbers)` that returns the largest value in a non-empty list, WITHOUT using max(), sorted() or any other built-in that solves it for you. Use a loop and a tracker variable.",
+        "difficulty": 2,
+        "starter_code": "def find_max(numbers):\n    # tracker: start with the first item\n    # loop: keep the largest seen so far\n    pass\n\nprint(find_max([3, 7, 2]))",
+        "test_spec": {"type": "function", "tests": [{"call": "find_max([3, 7, 2])", "expected": "7"}, {"call": "find_max([-5, -2, -9])", "expected": "-2"}, {"call": "find_max([42])", "expected": "42"}, {"call": "find_max([1, 9, 9, 3])", "expected": "9"}]},
+        "hints": [
+          "You need a variable that remembers the biggest value seen so far. What should it start as, so that it works even for a list of negative numbers?",
+          "Start with biggest = numbers[0], then compare each item against it inside a for loop.",
+          "if n > biggest: biggest = n. After the loop, return biggest. (Not 0 - that fails the all-negative test!)"
+        ],
+        "solution": {"code": "def find_max(numbers):\n    biggest = numbers[0]\n    for n in numbers:\n        if n > biggest:\n            biggest = n\n    return biggest", "explanation": "The tracker starts as the first item (so negative lists work), the loop compares every value, and the tracker only changes when a strictly bigger value appears. Duplicates are irrelevant - the max is still 9. This single-pass pattern is the foundation of many algorithms."}
+      }
+    },
+    {
+      "slug": "debugging",
+      "title": "Debugging",
+      "summary": "Bugs are normal. Learn a systematic method to find them: reproduce, locate, understand, fix, verify.",
+      "objectives": ["Follow a five-step debugging method", "Use strategic prints to locate problems", "Recognize the classic beginner bugs by symptom", "Know what to do before asking for help"],
+      "sections": [
+        {
+          "heading": "The method: reproduce, locate, understand, fix, verify",
+          "body": "Debugging is not staring at code hoping. It is a loop:\n\n1. **Reproduce** - run it and get the bug to happen on demand. \"Sometimes broken\" is nearly impossible to fix.\n2. **Locate** - narrow down WHERE reality diverges from your expectation. Not \"the program is wrong\", but \"the total is wrong, so check what enters it\".\n3. **Understand** - state the wrong behavior out loud: \"the loop never ends because I forgot to subtract 1.\"\n4. **Fix** - change ONE thing that addresses the understood cause.\n5. **Verify** - run the failing case again AND the normal cases. Then keep the fix.\n\nNever change three things at once - if it works you learn nothing, and if it breaks you learn even less."
+        },
+        {
+          "heading": "The print() probe",
+          "body": "The fastest locating tool is a temporary print that shows the program's inner state:\n\n```python\ndef average(numbers):\n    total = 0\n    for n in numbers:\n        total += n\n    print(\"DEBUG: total =\", total)      # probe inside the loop\n    return total / len(numbers)\n```\n\nPlace probes just BEFORE and AFTER the point you suspect, and check whether the values match your mental model. A probe that shows a wrong value has caught the bug red-handed; a correct value means the bug is further along - either way you eliminated half the program.\n\n(Real projects use dedicated debuggers, and Python ships one called pdb - but strategic prints remain the professional quick weapon.)"
+        },
+        {
+          "heading": "The classic five bugs",
+          "body": "Beginners meet the same few bugs constantly. Recognize them by symptom:\n\n- **Off-by-one** - you wanted items 0..3 and got 0..2 (or crashed). Check your range end bounds: `range(4)` means 0, 1, 2, 3.\n- **Infinite loop** - nothing ever makes the while-condition false. Find the line that should change it.\n- **Type confusion** - \"23\" instead of 5. Print `type(x)`; check whether input needed int().\n- **Wrong operator** - `=` where `==` belongs, or `-` instead of `+`. SyntaxError points here fast.\n- **Forgotten return** - function computed the answer, printed nothing, returned None. Check every path returns a value.\n\nBefore asking anyone (or the AI tutor) for help, prepare: the code, the input, the expected result, and the actual result. That is exactly what the Debugging tool in this app asks for - with those four facts, most bugs reveal themselves."
+        }
+      ],
+      "example": {
+        "title": "Debugging a real bug, step by step",
+        "code": "# GOAL: print the sum of the first 5 numbers, 1..5 (should be 15)\ntotal = 0\nfor i in range(5):\n    total = total + i\nprint(\"Sum:\", total)",
+        "explanation": "Run it and it prints **Sum: 10**, not 15. The bug reproduced. Locate: insert `print(\"DEBUG i=\", i, \"total=\", total)` inside the loop. The probe shows i running 0, 1, 2, 3, 4 - and there it is: **range(5) starts at 0**. Understand: we summed 0+1+2+3+4 = 10, but wanted 1+2+3+4+5. Fix: `range(1, 6)`. Verify: run again - Sum: 15. Correct. One change, understood cause, tested result. Remove the probe, keep the fix."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "A program must average some numbers, but the result is wrong. Where is the FIRST best place to put a debug print?",
+          "options": ["At the very end of the program", "Inside the loop that accumulates the total, showing the running value", "Inside the input() prompt", "Nowhere - prints never help"],
+          "answer": 1,
+          "explanation": "Probe where the suspect value lives: inside the accumulating loop, printing the running total and the current item. The first wrong value shown marks the bug's location."
+        },
+        {
+          "id": "q2",
+          "question": "Your fix made the program work. What separates an amateur from a professional?",
+          "options": ["Professionals fix it faster", "Professionals also re-test the previously working cases and remove debug prints", "Professionals rewrite the whole function anyway", "Nothing"],
+          "answer": 1,
+          "explanation": "Verification means testing BOTH the failing case and the normal cases (fixes often break neighbors), and cleaning up probes so they don't pollute real output."
+        }
+      ],
+      "exercise": {
+        "kind": "find_bug",
+        "title": "The silent average",
+        "prompt": "This program should print the average of [4, 8, 6] (which is 6.0), but it crashes. Which line causes the failure?\n\n```python\n1: def average(numbers):\n2:     total = 0\n3:     for n in numbers:\n4:         total += n\n5:     return total / len(total)\n6:\n7: print(average([4, 8, 6]))\n```",
+        "difficulty": 2,
+        "answer": {"line": 5},
+        "hints": [
+          "Read the traceback mentally: 'TypeError: unsupported operand type(s)'. Some value is not the type the line expects.",
+          "Check each name on the failing line. total is a number here. What is len() meant to receive?",
+          "len(total) calls len() on a NUMBER (total is 18 by then). The average needs the number of items: len(numbers)."
+        ],
+        "solution": {"code": "    return total / len(numbers)", "explanation": "Line 5 asks len() of total - an int holding 18 - but len() only accepts sized things like lists and strings. The divisor must be the item count: len(numbers). Fix it to `return total / len(numbers)` and the program prints 6.0. This bug is common after renaming variables: the name on the left of len() must match the thing being counted."}
+      }
+    },
+    {
+      "slug": "mini-projects",
+      "title": "Building Small Projects",
+      "summary": "Lessons end here - real programs begin. Learn how to scope, build and finish a small project that is genuinely yours.",
+      "objectives": ["Turn a vague idea into a buildable scope", "Apply the milestone method to any project", "Know where to go next in your programming journey"],
+      "sections": [
+        {
+          "heading": "From idea to scope",
+          "body": "\"I want to make a game\" is a wish, not a plan. A buildable version names the exact behavior: *a number guessing game: the program picks 1-100, the player guesses, the program answers higher/lower, and counts attempts.*\n\nThe technique is to cut the idea down to ONE core interaction that works end to end, then grow it. A finished tiny program teaches more than an ambitious abandoned one. Ask: what is the smallest version that would still be genuinely useful or fun?\n\nAll the skills you need are now in your hands: variables and input, conditions, loops, lists, dicts, functions, files for saving, exceptions for bad input, classes for modeling things, and a debugging method for when it misbehaves."
+        },
+        {
+          "heading": "The milestone method",
+          "body": "Never write a whole program and then run it. Build in small verifiable stages - each one leaves the program BETTER, not BROKEN:\n\n1. **Milestone 1 - skeleton that runs.** Inputs and outputs, even if the logic is a stub (`print(\"(logic goes here)\")`).\n2. **Milestone 2 - core loop.** The main interaction works, even without polish.\n3. **Milestone 3 - correctness.** Handle invalid input with try/except; test the edges (empty input, zero, huge numbers).\n4. **Milestone 4 - persistence and polish.** Save high scores to a file; format the output nicely.\n\nAfter each milestone: RUN it, fix what breaks, then continue. The Projects section of this app gives you exactly this structure, with guidance per milestone and without dumping full solutions on you."
+        },
+        {
+          "heading": "Where to go next",
+          "body": "Finish the guided projects in the Projects section: the number guessing game, the calculator, the quiz app, the expense tracker and friends. Pick one that excites you - motivation is fuel.\n\nAfter that: modify every project you finish (add difficulty levels, keep a leaderboard) - reading and changing working code is how programmers actually grow. When you are comfortable with Python, the planned paths in this app (JavaScript, SQL, data structures) are the natural next steps, and the AI tutor is ready to explain, review and debug alongside you the whole way."
+        }
+      ],
+      "example": {
+        "title": "A complete tiny project: the guessing game, milestone by milestone",
+        "code": "import random\n\n# Milestone 2+4: full game loop with attempt counting\nsecret = random.randint(1, 100)\nattempts = 0\n\nprint(\"I picked a number from 1 to 100. Guess it!\")\nwhile True:\n    raw = input(\"Your guess: \")\n    try:\n        guess = int(raw)\n    except ValueError:\n        print(\"Numbers only, please.\")\n        continue\n    attempts += 1\n    if guess < secret:\n        print(\"Higher!\")\n    elif guess > secret:\n        print(\"Lower!\")\n    else:\n        print(f\"Correct! You got it in {attempts} tries.\")\n        break",
+        "explanation": "Every course skill appears here: random module import, a while True loop with break, try/except guarding the input, a counter, if/elif/else for the three outcomes, and an f-string finale. Notice it grew from a skeleton - first just input/print, then the comparison, then error handling - exactly the milestone method. The project section's first guided project walks you through building this one yourself, step by step, without giving you the finished code up front."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "Why is \"a program that runs, but does only part of the job\" better at every step than \"the whole thing, unfinished\"?",
+          "options": ["It isn't - complete designs are always better", "Because you can run and verify each working stage, so problems surface small and you always know what still works", "Because shorter programs use less memory", "Because compilers require it"],
+          "answer": 1,
+          "explanation": "Long unbroken stretches of unrun code hide many bugs at once. Working milestones localize failures to the newest change - the single most valuable debugging advantage."
+        },
+        {
+          "id": "q2",
+          "question": "Which order matches the milestone method taught in this lesson?",
+          "options": ["Design everything, then code, then test at the end", "Skeleton that runs, core loop, correctness and edge cases, persistence and polish", "Polish first for motivation, then logic, then inputs", "Random order does not matter"],
+          "answer": 1,
+          "explanation": "Run early, grow in verified layers: a running skeleton, the core interaction, correctness on edge inputs, and only then persistence and polish."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "The game logic core",
+        "prompt": "Extract the heart of the guessing game into a testable function. Write `check_guess(secret, guess)` that returns exactly `\"correct\"` when equal, `\"too low\"` when guess is smaller, and `\"too high\"` when guess is larger. Both values are ints.",
+        "difficulty": 2,
+        "starter_code": "def check_guess(secret, guess):\n    # three-way comparison -> three possible results\n    pass\n\nprint(check_guess(50, 30))   # should print: too low",
+        "test_spec": {"type": "function", "tests": [{"call": "check_guess(50, 30)", "expected": "'too low'"}, {"call": "check_guess(50, 90)", "expected": "'too high'"}, {"call": "check_guess(50, 50)", "expected": "'correct'"}, {"call": "check_guess(1, 1)", "expected": "'correct'"}]},
+        "hints": [
+          "One function, three possible return values - which control structure chooses between exactly three options?",
+          "if guess < secret: return \"too low\" ... elif guess > secret: ... else: ...",
+          "Return lowercase strings exactly as specified: \"too low\", \"too high\", \"correct\" - the grader compares them literally."
+        ],
+        "solution": {"code": "def check_guess(secret, guess):\n    if guess < secret:\n        return \"too low\"\n    elif guess > secret:\n        return \"too high\"\n    else:\n        return \"correct\"", "explanation": "A pure function: integers in, one of three strings out, no printing - which is exactly what makes it testable (the grader calls it with each case). The if/elif/else covers all three relations between two ints with no overlaps and no gaps. This is the logic core of the guided Number Guessing Game project - you have already built its heart."}
+      }
+    }
+  ]
+}

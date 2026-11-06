@@ -1,0 +1,172 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "lists-tuples",
+      "title": "Lists and Tuples",
+      "summary": "Store many values in order: create lists, read and change items, and know when to use a tuple instead.",
+      "objectives": ["Create lists and read items by index", "Add, remove and change list items", "Slice out portions of a list", "Explain the difference between list and tuple"],
+      "sections": [
+        {
+          "heading": "Lists hold many values",
+          "body": "A **list** stores several values in one variable, in order, inside square brackets:\n\n```python\nscores = [88, 92, 79, 95]\nnames = [\"Ada\", \"Grace\", \"Alan\"]\nmixed = [\"a\", 1, True]      # allowed but rare\n```\n\nRead one item with its **index** - the position - starting at **0**: `scores[0]` is 88, `scores[1]` is 92. Negative indexes count from the end: `scores[-1]` is 95 (the last item).\n\n`len(scores)` gives the length: 4. That makes the *last index* always `len - 1` - trying `scores[4]` raises an **IndexError**."
+        },
+        {
+          "heading": "Changing lists",
+          "body": "Lists are **mutable** - you can change their contents:\n\n```python\nscores = [88, 92, 79]\nscores[0] = 90        # replace:    [90, 92, 79]\nscores.append(85)     # add at end: [90, 92, 79, 85]\nscores.remove(92)     # remove by value\nlast = scores.pop()   # remove and return the last item\n```\n\n`append` is the everyday tool for growing a list (for example, collecting answers inside a loop). `pop()` also accepts an index: `scores.pop(0)` removes the first item.\n\nWatch out: `scores + [1]` builds a *new* list, while `scores.append(1)` changes the existing one. And two lists never compare element-by-element for equality by value - `[1, 2] == [1, 2]` is True, but `[1, 2] == [2, 1]` is False because order matters."
+        },
+        {
+          "heading": "Slices: portions of a list",
+          "body": "`scores[1:3]` returns a new list with items at index 1 and 2 - **up to but not including** the end, exactly like `range`:\n\n```python\nscores = [10, 20, 30, 40, 50]\nscores[1:3]    # [20, 30]\nscores[:2]     # [10, 20]       (from the start)\nscores[3:]     # [40, 50]       (to the end)\nscores[-2:]    # [40, 50]       (last two)\n```\n\nA slice never raises IndexError - going too far just returns fewer items."
+        },
+        {
+          "heading": "Tuples: immutable lists",
+          "body": "A **tuple** looks like a list but with round brackets, and it **cannot be changed** after creation:\n\n```python\npoint = (3, 7)\npoint[0]        # 3 - reading works like a list\npoint[0] = 5    # TypeError! tuples are immutable\n```\n\nUse a tuple for fixed groups of values: coordinates, RGB colors, (name, age) pairs. Tuples also let you swap elegantly: `a, b = b, a` - Python packs both sides into tuples and unpacks them."
+        }
+      ],
+      "example": {
+        "title": "Working with a to-do list",
+        "code": "todos = [\"learn loops\", \"do exercise\", \"build project\"]\nprint(\"You have\", len(todos), \"tasks\")\n\ntodos.append(\"review quiz\")\nprint(\"After adding one:\", todos)\n\ndone = todos.pop(0)\nprint(\"Finished:\", done)\nprint(\"Remaining:\", len(todos))\n\nfirst_two = todos[:2]\nprint(\"Next up:\", first_two)",
+        "explanation": "append grows the list, `pop(0)` removes and returns the first task, `len` counts what is left, and the slice `[:2]` copies the first two items without modifying anything. Output:\n\n```\nYou have 3 tasks\nAfter adding one: ['learn loops', 'do exercise', 'build project', 'review quiz']\nFinished: learn loops\nRemaining: 3\nNext up: ['do exercise', 'build project']\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does this print?\n```python\nnums = [4, 8, 15, 16]\nprint(nums[1] + nums[-1])\n```",
+          "options": ["12", "20", "24", "An error"],
+          "answer": 2,
+          "explanation": "nums[1] is 8 (index 1, second item) and nums[-1] is 16 (last item). 8 + 16 = 24."
+        },
+        {
+          "id": "q2",
+          "question": "Which line raises a TypeError?",
+          "options": ["t = (1, 2)", "t[0]", "t = (1, 2); t[0] = 9", "t = (1, 2); print(len(t))"],
+          "answer": 2,
+          "explanation": "Tuples are immutable - assigning to an item is forbidden. Creating, reading and len() are all fine."
+        }
+      ],
+      "exercise": {
+        "kind": "predict_output",
+        "title": "Track the list",
+        "prompt": "What does this program print?\n\n```python\nitems = [10, 20, 30]\nitems.append(40)\nitems[0] = 5\nprint(len(items), items[0], items[-1])\n```",
+        "difficulty": 2,
+        "answer": {"output": "4 5 40"},
+        "hints": [
+          "Follow the changes in order: what does the list look like after each line?",
+          "After append it has 4 items; after replacing index 0 the first item is no longer 10.",
+          "The list ends up [5, 20, 30, 40] - len 4, first 5, last 40."
+        ],
+        "solution": {"code": "4 5 40", "explanation": "append(40) makes [10, 20, 30, 40]; items[0] = 5 makes [5, 20, 30, 40]. Then len is 4, items[0] is 5, items[-1] is 40. print separates the three values with spaces: `4 5 40`."}
+      }
+    },
+    {
+      "slug": "dicts-sets",
+      "title": "Dictionaries and Sets",
+      "summary": "Look values up by name instead of position with dictionaries, and keep unique collections with sets.",
+      "objectives": ["Store and look up values with keys in a dict", "Add, change and delete dict entries safely", "Loop over a dictionary's keys and values", "Use sets for uniqueness and membership tests"],
+      "sections": [
+        {
+          "heading": "Dictionaries: values with names",
+          "body": "A **dictionary** (dict) stores pairs of a **key** and a **value**, in curly braces:\n\n```python\nages = {\"Ada\": 36, \"Grace\": 45, \"Alan\": 41}\nprint(ages[\"Ada\"])    # 36\n```\n\nInstead of remembering a position, you look things up by name. Reading a missing key raises **KeyError** - to stay safe, use `.get()`, which returns a default instead of crashing:\n\n```python\nages.get(\"Ada\")          # 36\nages.get(\"Bob\")          # None (no crash)\nages.get(\"Bob\", 0)       # 0 - your chosen default\n```\n\nUse `\"name\" in ages` to check whether a key exists."
+        },
+        {
+          "heading": "Changing dictionaries",
+          "body": "Assigning to a key adds a new entry or overwrites an existing one:\n\n```python\nages = {\"Ada\": 36}\nages[\"Bob\"] = 25      # add\nages[\"Ada\"] = 37      # update (same key = new value)\ndel ages[\"Bob\"]       # remove\n```\n\nLooping works on keys by default:\n\n```python\nfor name in ages:\n    print(name, ages[name])\n```\n\nOr get both at once with `.items()`: `for name, age in ages.items():` - a pattern you will use constantly."
+        },
+        {
+          "heading": "Sets: unique, unordered",
+          "body": "A **set** is an unordered collection with **no duplicates**:\n\n```python\nseen = {1, 2, 3}\nseen.add(2)          # still {1, 2, 3} - duplicates are ignored\n3 in seen            # True - membership tests are instant\n```\n\n`in` on a set is extremely fast even for huge collections, which makes sets perfect for \"have I seen this already?\" checks. An empty dict is `{}` - to create an empty *set* you must write `set()`, because `{}` means empty dict.\n\nYou can also deduplicate anything: `unique = set([1, 1, 2, 3, 3])` gives `{1, 2, 3}`."
+        }
+      ],
+      "example": {
+        "title": "Counting words with a dict",
+        "code": "votes = {\"python\": 0, \"javascript\": 0}\n\nvotes[\"python\"] += 1\nvotes[\"python\"] += 1\nvotes[\"javascript\"] += 1\n\nvotes[\"rust\"] = 1   # a new key joins late\n\nfor language, count in votes.items():\n    print(language, \"has\", count, \"votes\")\n\nprint(\"Winner is python:\", votes[\"python\"] > votes[\"javascript\"])",
+        "explanation": "`votes[\"python\"] += 1` reads the current value, adds one and stores it back - the standard counting pattern. Assigning to `votes[\"rust\"]` creates the key. `.items()` hands you each key and value together. Output:\n\n```\npython has 2 votes\njavascript has 1 votes\nrust has 1 votes\nWinner is python: True\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does `ages.get(\"Zoe\", 18)` return when `\"Zoe\"` is NOT a key in `ages`?",
+          "options": ["KeyError", "None", "18", "0"],
+          "answer": 2,
+          "explanation": ".get() returns the default you provide as the second argument when the key is missing. Without a default it would return None - never a crash."
+        },
+        {
+          "id": "q2",
+          "question": "What is the value of `len({1, 2, 2, 3, 3, 3})`?",
+          "options": ["6", "3", "2", "1"],
+          "answer": 1,
+          "explanation": "Sets silently drop duplicates: {1, 2, 2, 3, 3, 3} is just {1, 2, 3}, so the length is 3."
+        }
+      ],
+      "exercise": {
+        "kind": "mcq",
+        "title": "Reading a dict safely",
+        "prompt": "Your program stores user settings:\n\n```python\nsettings = {\"theme\": \"dark\", \"font\": 14}\n```\n\nThe code needs the value for key `\"volume\"`, which may or may not exist, and should use `50` when it is missing. Which line does exactly that without ever crashing?",
+        "options": ["print(settings[\"volume\"])", "print(settings.get(\"volume\", 50))", "print(settings.get(\"volume\"))", "print(settings + 50)"],
+        "answer": 1,
+        "hints": [
+          "Direct square-bracket access crashes with KeyError when the key is missing.",
+          "There is a dict method that takes a default value as its second argument.",
+          "settings.get(\"volume\", 50) returns the stored value if present, and 50 otherwise."
+        ],
+        "solution": {"code": "print(settings.get(\"volume\", 50))", "explanation": ".get(key, default) never raises KeyError: it returns the stored value when the key exists, and your default when it does not. Plain .get(\"volume\") would return None (not 50), and settings[\"volume\"] would crash."}
+      }
+    },
+    {
+      "slug": "strings",
+      "title": "Strings and String Methods",
+      "summary": "Work with text like a programmer: index and slice it, transform it with methods, and build strings cleanly.",
+      "objectives": ["Index, slice and loop over strings", "Use the most important string methods", "Combine strings with f-strings", "Understand why strings are immutable"],
+      "sections": [
+        {
+          "heading": "Strings are sequences of characters",
+          "body": "A string is a sequence of single characters, so indexing and slicing work exactly like lists:\n\n```python\nword = \"python\"\nword[0]       # 'p'\nword[-1]      # 'n'\nword[0:3]     # 'pyt'\nlen(word)      # 6\n```\n\nYou can loop over them too: `for ch in \"abc\":` visits `'a'`, then `'b'`, then `'c'`."
+        },
+        {
+          "heading": "The everyday string methods",
+          "body": "Methods are functions attached to a value, called with a dot:\n\n- `\"  Hi  \".strip()` → `\"Hi\"` (trim edges - great after input)\n- `\"hi there\".title()` → `\"Hi There\"`; `.upper()`, `.lower()` change case\n- `\"a,b,c\".split(\",\")` → `[\"a\", \"b\", \"c\"]` (break into a list)\n- `\"-\".join([\"2026\", \"10\", \"12\"])` → `\"2026-10-12\"` (glue a list together)\n- `\"hello\".startswith(\"he\")` → True; `.endswith()` too\n- `\"spam\" in \"spam sandwich\"` → True (substring check)\n- `s.replace(\"a\", \"o\")` substitutes every occurrence\n\nImportant: strings are **immutable**. Methods return NEW strings - the original is untouched:\n\n```python\nname = \"ada\"\nname.upper()     # returns \"ADA\" but throws it away!\nname = name.upper()   # correct: capture the result\n```"
+        },
+        {
+          "heading": "f-strings: readable formatting",
+          "body": "Insert values into text by putting `f` before the quotes and expressions in `{}`:\n\n```python\nname = \"Ada\"\nscore = 91\nprint(f\"{name} scored {score}%\")   # Ada scored 91%\nprint(f\"{(score + 5) / 100:.2f}\")   # 0.96 - rounded to 2 decimals\n```\n\nf-strings are the modern Python way to build messages - clearer than `+` concatenation because you never juggle str() conversions and spaces."
+        }
+      ],
+      "example": {
+        "title": "Cleaning up user input",
+        "code": "raw = \"   ada LOVELACE   \"\n\nclean = raw.strip().lower()\nprint(clean)\n\ninitials = clean[0] + clean[4]\nprint(\"Initials:\", initials.upper())\n\nfull = f\"Welcome, {clean.title()}!\"\nprint(full)",
+        "explanation": "strip() removes the outer spaces, lower() normalizes the case - the standard two-step for processing typed input. Indexing works on the cleaned string: 'a' and 'l'. Note the method chain `raw.strip().lower()` - each method's result feeds the next. Output:\n\n```\nada lovelace\nInitials: AL\nWelcome, Ada Lovelace!\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does `\"hello\"[1:4]` give?",
+          "options": ["\"ell\"", "\"hel\",", "\"hell\"", "\"llo\""],
+          "answer": 0,
+          "explanation": "Slices include the start index (1 = 'e') and exclude the end index (4), so you get 'e', 'l', 'l' - \"ell\"."
+        },
+        {
+          "id": "q2",
+          "question": "After these lines, what is `name`?\n```python\nname = \"ada\"\nname.upper()\n```",
+          "options": ["ADA", "ada", "None", "An error"],
+          "answer": 1,
+          "explanation": "Strings are immutable - upper() returns a brand-new string, and since the result is not assigned anywhere it is discarded. To change name you must write name = name.upper()."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "Initials extractor",
+        "prompt": "Write a function `initials(full_name)` that takes a full name like `\"ada lovelace\"` and returns the initials in capitals, like `\"AL\"`. The name is always exactly two words separated by one space.",
+        "difficulty": 2,
+        "starter_code": "def initials(full_name):\n    # Split the name into a list of words\n    # Take the first letter of each word\n    # Join them and return in uppercase\n    pass\n\nprint(initials(\"ada lovelace\"))",
+        "test_spec": {"type": "function", "tests": [{"call": "initials('ada lovelace')", "expected": "'AL'"}, {"call": "initials('alan turing')", "expected": "'AT'"}, {"call": "initials('grace hopper')", "expected": "'GH'"}]},
+        "hints": [
+          "A function must hand its result back to the caller - check that you are using `return`, not `print`.",
+          "`full_name.split(\" \")` gives [\"ada\", \"lovelace\"]. Words have indexes: parts[0], parts[1].",
+          "Take parts[0][0] and parts[1][0], join them with +, and call .upper() on the result before returning it."
+        ],
+        "solution": {"code": "def initials(full_name):\n    parts = full_name.split(\" \")\n    return (parts[0][0] + parts[1][0]).upper()", "explanation": "split(\" \") breaks the name into words. Each word is itself a string, so parts[0][0] is the first letter of the first word. Join the two letters, then .upper() converts both at once. return sends the result back - the test harness compares exactly what the function returns."}
+      }
+    }
+  ]
+}

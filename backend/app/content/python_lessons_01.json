@@ -1,0 +1,165 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "what-is-programming",
+      "title": "What is Programming?",
+      "summary": "Understand what a program really is, how a computer follows instructions, and why Python is a great first language.",
+      "objectives": ["Explain what a program is in your own words", "Describe how a computer executes instructions", "Know why Python is a good first language"],
+      "sections": [
+        {
+          "heading": "A program is a list of instructions",
+          "body": "A computer is fast but literal-minded. It does exactly what you tell it, in the order you tell it - nothing more, nothing less. A **program** is a list of precise instructions that a computer follows one by one.\n\nThink of a recipe: *preheat the oven, mix flour and sugar, bake for 30 minutes*. If you swap steps or skip one, the result changes. Programs are the same, but a computer will never \"guess\" a missing step - it either follows your instructions perfectly or stops with an error telling you what it could not do."
+        },
+        {
+          "heading": "Computers follow instructions exactly",
+          "body": "Humans read between the lines. Computers do not. When you write:\n\n- `add 2 and 2`\n- `show the result`\n\nthe computer performs step one, then step two, top to bottom. This is why small typos matter in programming - and also why programming teaches careful, logical thinking.\n\nEvery app you have used - a browser, a game, a phone app - is a program, usually made of thousands of small instructions working together."
+        },
+        {
+          "heading": "Why start with Python",
+          "body": "Python was designed to be **readable**. It looks close to plain English, so you spend your energy learning programming ideas instead of fighting complicated syntax. It is also used everywhere: websites, data science, artificial intelligence, automation, and science.\n\nOne important habit from day one: you cannot break the computer by writing wrong code. Worst case, you get an error message - and errors are teachers, not failures. Every programmer sees them daily."
+        }
+      ],
+      "example": {
+        "title": "Your very first program (preview)",
+        "code": "print(\"Hello, world!\")\nprint(\"I am learning Python\")",
+        "explanation": "This tiny program contains one instruction: display the text between the quotes. Run it and the computer prints exactly:\n\n```\nHello, world!\nI am learning Python\n```\n\nYou will write this yourself in the next lesson. For now, notice the pattern: the word `print`, then round brackets, then the text in quotes."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What is a program?",
+          "options": ["A file full of pictures", "A list of instructions a computer follows step by step", "A type of computer", "A website"],
+          "answer": 1,
+          "explanation": "A program is a precise list of instructions. The computer executes them in order, exactly as written."
+        },
+        {
+          "id": "q2",
+          "question": "What happens if your code contains a typo?",
+          "options": ["The computer breaks permanently", "The program will never run again", "You usually get an error message that helps you fix it", "Nothing, computers fix typos automatically"],
+          "answer": 2,
+          "explanation": "Errors are normal and safe. The interpreter reports what went wrong so you can fix it - that loop is what programming practice looks like."
+        }
+      ],
+      "exercise": {
+        "kind": "mcq",
+        "title": "Think like a computer",
+        "prompt": "A program has these instructions:\n\n1. Take a number\n2. Multiply it by 3\n3. Show the result\n\nIf the number is 4, what does the program show?",
+        "difficulty": 1,
+        "options": ["4", "7", "12", "16"],
+        "answer": {"index": 2},
+        "hints": [
+          "Do not skip ahead - follow the instructions in order, like a computer would.",
+          "Step 2 transforms the input: 4 becomes something new.",
+          "4 multiplied by 3 is 12."
+        ],
+        "solution": {"code": "", "explanation": "The computer follows the steps literally: take 4, multiply by 3 to get 12, then show 12. Programs transform inputs into outputs, step by step."}
+      }
+    },
+    {
+      "slug": "installing-python",
+      "title": "Installing and Running Python",
+      "summary": "Get Python onto your computer, run your first commands, and learn the two ways you will write code in this course.",
+      "objectives": ["Install Python 3 on your computer", "Verify the installation from a terminal", "Understand the difference between the interactive shell and a script file"],
+      "sections": [
+        {
+          "heading": "Installing Python",
+          "body": "Download the latest Python 3 from **python.org/downloads** and run the installer. On Windows, make sure the checkbox **\"Add Python to PATH\"** is ticked before clicking Install - this lets you run Python from any terminal.\n\nTo check that it worked, open a terminal (on Windows: press Start, type `cmd`, press Enter) and type:\n\n```\npython --version\n```\n\nYou should see something like `Python 3.13.x`. If you see an error, Python was not added to PATH - run the installer again and tick the checkbox."
+        },
+        {
+          "heading": "Two ways to run Python",
+          "body": "**1. The interactive shell (REPL).** Type `python` in the terminal and press Enter. You get a `>>>` prompt where each line runs the moment you press Enter. Great for quick experiments.\n\n**2. Script files.** Save your code in a file ending in `.py` (for example `hello.py`) and run:\n\n```\npython hello.py\n```\n\nThe whole file runs top to bottom. Real programs are script files. The interactive shell is your sketchpad."
+        },
+        {
+          "heading": "Where you will practice in this course",
+          "body": "Good news: **you do not need to install anything to follow this course**. Every lesson has a *Playground* where you write and run Python right in the app - safely and instantly, with no setup.\n\nInstalling Python is still worth it so you can build projects on your own computer later. Try both: experiment in the Playground, and run bigger scripts locally."
+        }
+      ],
+      "example": {
+        "title": "First run: the interactive shell",
+        "code": "Python 3.13.1\n>>> 2 + 2\n4\n>>> print(\"Hello, world!\")\nHello, world!\n>>> exit()",
+        "explanation": "In the interactive shell, `2 + 2` evaluates to 4 and shows it immediately. `print(\"...\")` displays text. Type `exit()` to leave the shell.\n\nNotice that arithmetic works without `print` in the shell - the shell always shows the result of an expression. In script files, only `print` produces visible output."
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "Which command confirms that Python is installed and available?",
+          "options": ["python --version", "install python", "run python", "python download"],
+          "answer": 0,
+          "explanation": "`python --version` prints the installed version (e.g. Python 3.13.1). If it fails, Python is not on your PATH."
+        },
+        {
+          "id": "q2",
+          "question": "What is the main difference between the interactive shell and a script file?",
+          "options": ["Scripts can only do math", "The shell runs each line as you type it; a script runs the whole file top to bottom", "The shell is for experts only", "There is no difference"],
+          "answer": 1,
+          "explanation": "The interactive shell is for quick experiments line by line. Scripts store a complete program that runs top to bottom."
+        }
+      ],
+      "exercise": {
+        "kind": "mcq",
+        "title": "Reading terminal output",
+        "prompt": "You open a terminal and run:\n\n```\npython --version\n```\n\nThe terminal replies: `Python 3.13.1`. What did you just learn?",
+        "options": ["Python is installed and available in the terminal", "Python is out of date and must be replaced", "The terminal is broken", "Nothing - the message is an error"],
+        "answer": 0,
+        "hints": [
+          "A version number printed without an error message is good news.",
+          "This output means the `python` command was found and it knows its own version.",
+          "It confirms the installation worked and the PATH is set up correctly."
+        ],
+        "solution": {"code": "", "explanation": "`Python 3.13.1` is the interpreter reporting its version. No error means the `python` command resolved correctly - your installation works and you can run scripts."}
+      }
+    },
+    {
+      "slug": "print-and-comments",
+      "title": "print() and Comments",
+      "summary": "Display text and numbers on screen, and write notes inside your code for humans.",
+      "objectives": ["Use print() to display values", "Print text, numbers and multiple values", "Write single-line comments and explain why they matter"],
+      "sections": [
+        {
+          "heading": "Showing output with print()",
+          "body": "`print()` displays things on the screen. Whatever you put between the round brackets is shown when that line runs:\n\n- `print(\"Hello\")` shows: Hello\n- `print(42)` shows: 42\n- `print(\"Hello\", \"there\")` shows: Hello there (a space is inserted between values)\n\nThe values between brackets are called **arguments**. You can pass several, separated by commas. Text in quotes is called a **string**; we will name types properly in the next lesson."
+        },
+        {
+          "heading": "Comments: notes for humans",
+          "body": "A comment starts with `#`. Python ignores everything from `#` to the end of the line:\n\n```python\n# This line explains the line below\nprint(\"Hello, world!\")  # this also does not run\n```\n\nComments are for **people** - including future you. Use them to say *why* code exists, not just *what* it does. Professional code is full of comments. They cost nothing at runtime.\n\nOne habit worth building now: write a comment above a tricky line *before* you write the line. It forces you to explain the idea clearly."
+        }
+      ],
+      "example": {
+        "title": "print() with several values",
+        "code": "# A tiny welcome program\nprint(\"Welcome to Python!\")\nprint(\"2 + 2 equals\", 2 + 2)\nprint()   # prints an empty line\nprint(\"Bye for now\")",
+        "explanation": "Line by line: the first `print` shows text. The second shows a string and the *result* of a calculation - `print` evaluates expressions first, so it shows `2 + 2 equals 4`. `print()` with nothing inside prints a blank line. Output:\n\n```\nWelcome to Python!\n2 + 2 equals 4\n\nBye for now\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What does `print(\"2 + 2\")` display?",
+          "options": ["4", "2 + 2", "An error", "Nothing"],
+          "answer": 1,
+          "explanation": "The quotes make `\"2 + 2\"` a string - literal text, not a calculation. Python prints the characters exactly as written: 2 + 2."
+        },
+        {
+          "id": "q2",
+          "question": "What does this line do?\n```python\nprint(\"Sum:\", 3 + 4)  # calculate\n```",
+          "options": ["Prints: Sum: 3 + 4", "Prints: Sum: 7", "Prints: # calculate", "Raises an error"],
+          "answer": 1,
+          "explanation": "Two arguments are printed with a space between them. The second argument is evaluated, so `3 + 4` becomes 7. The comment after `#` is ignored."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "Your first program",
+        "prompt": "Write a program that prints exactly two lines:\n\nLine 1: `Hello, world!`\nLine 2: `I am learning Python`\n\nAdd a comment above your code that says what the program does.",
+        "difficulty": 1,
+        "starter_code": "# This program greets the world and states my goal\n# Print the first line:\n\n# Print the second line:\n",
+        "test_spec": {"type": "stdout", "cases": [{"stdin": "", "expected_output": "Hello, world!\nI am learning Python"}]},
+        "hints": [
+          "You need the `print()` function once per line of output - and text always goes inside quotes.",
+          "Write `print(\"Hello, world!\")` first, then a second print for the second line. Run your code between steps.",
+          "Both strings must match exactly, including the comma and the exclamation mark: `print(\"I am learning Python\")`."
+        ],
+        "solution": {"code": "# This program greets the world and states my goal\nprint(\"Hello, world!\")\nprint(\"I am learning Python\")", "explanation": "Each `print()` produces one line of output. The quotes tell Python these are strings - literal text. Everything after `#` is a comment and is ignored, so it is there purely for human readers."}
+      }
+    }
+  ]
+}

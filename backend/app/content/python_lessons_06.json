@@ -1,0 +1,168 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "exceptions",
+      "title": "Exception Handling",
+      "summary": "When errors happen, catch them, understand them, and answer with a useful message instead of a crash.",
+      "objectives": ["Read a traceback and find the failing line", "Use try / except / else / finally", "Catch specific exception types", "Fail with clear messages using raise"],
+      "sections": [
+        {
+          "heading": "Errors are not shameful - they are information",
+          "body": "When Python hits a problem it raises an **exception** and prints a **traceback**: the chain of lines that led to the failure, ending with the error's name and message:\n\n```\nTraceback (most recent call last):\n  File \"shop.py\", line 4, in <module>\n    price = int(\"abc\")\nValueError: invalid literal for int() with base 10: 'abc'\n```\n\nRead from the BOTTOM up: error type, message, then the last `File ... line N` shows where. Beginners fear tracebacks; professionals read them calmly - they literally tell you what to fix.\n\nCommon types you have already met: `ValueError` (bad conversion), `TypeError` (wrong operation for the type), `NameError` (unknown name), `IndexError` (bad list index), `KeyError` (bad dict key), `ZeroDivisionError`, `IndentationError` and `SyntaxError`."
+        },
+        {
+          "heading": "Catching exceptions with try / except",
+          "body": "Wrap risky code in `try`, and handle a failure in `except`:\n\n```python\ntry:\n    price = int(input(\"Price? \"))\n    print(\"Total:\", price * 1.2)\nexcept ValueError:\n    print(\"Please type a whole number, like 25.\")\n```\n\nIf the try block succeeds, except is skipped. If that exact error occurs, Python jumps to except and the program keeps running. Catch **specific** types - a bare `except:` hides every bug, including ones you did not anticipate.\n\nTwo optional extras: `else` runs when no error occurred, and `finally` runs ALWAYS (perfect for cleanup like closing files): \n\n```python\ntry:\n    ...                 # risky part\nexcept ValueError:\n    ...                 # plan B\nelse:\n    ...                 # ran without problems\nfinally:\n    ...                 # no matter what\n```"
+        },
+        {
+          "heading": "Raising your own errors",
+          "body": "`raise` lets your code refuse bad input loudly instead of continuing with nonsense:\n\n```python\ndef set_age(age):\n    if age < 0:\n        raise ValueError(\"age cannot be negative\")\n    return age\n```\n\nA good validation function either returns a valid result or raises with a message that says *what was wrong and with what value*."
+        }
+      ],
+      "example": {
+        "title": "A crash-proof number reader",
+        "code": "def read_number(prompt):\n    \"\"\"Keep asking until the user types a valid number.\"\"\"\n    while True:\n        raw = input(prompt)\n        try:\n            return float(raw)\n        except ValueError:\n            print(f\"'{raw}' is not a number - try again.\")\n\nprice = read_number(\"Price? \")\nqty = read_number(\"How many? \")\nprint(f\"Total: {price * qty}\")",
+        "explanation": "This is the professional pattern for input validation: loop forever, try to convert, and return the instant it works - otherwise explain and ask again. The program can no longer crash on \"three\" or an empty line. Sample run (user first types oops, then 20, then 3):\n\n```\nPrice? oops\n'oops' is not a number - try again.\nPrice? 20\nHow many? 3\nTotal: 60.0\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "Which exception does `int(\"hello\")` raise?",
+          "options": ["TypeError", "ValueError", "NameError", "KeyError"],
+          "answer": 1,
+          "explanation": "int() received the right TYPE (a string) but a bad VALUE - it cannot be read as a number. ValueError."
+        },
+        {
+          "id": "q2",
+          "question": "What does this print?\n```python\ntry:\n    x = 10 / 2\nexcept ZeroDivisionError:\n    print(\"oops\")\nelse:\n    print(\"all good\")\nfinally:\n    print(\"done\")\n```",
+          "options": ["all good", "all good then done", "oops then done", "done"],
+          "answer": 1,
+          "explanation": "10/2 works, so except is skipped, else runs (all good), and finally ALWAYS runs (done)."
+        }
+      ],
+      "exercise": {
+        "kind": "fill_blank",
+        "title": "Catch the right error",
+        "prompt": "This program crashes when the user types letters instead of a number. Fill in the blank so the crash is handled politely:\n\n```python\ntry:\n    age = int(input(\"Age? \"))\nexcept ___:\n    print(\"That was not a number.\")\n```",
+        "difficulty": 2,
+        "answer": {"text": "ValueError"},
+        "hints": [
+          "What error type does int() raise when the string cannot be read as a number?",
+          "The traceback you saw in the lesson ended with 'ValueError: invalid literal for int()...'",
+          "Write the exception name exactly: ValueError"
+        ],
+        "solution": {"code": "try:\n    age = int(input(\"Age? \"))\nexcept ValueError:\n    print(\"That was not a number.\")", "explanation": "int(\"abc\") raises ValueError, so that is the type to catch. Catching only ValueError (rather than a bare except) is deliberate: real bugs like NameError or TypeError still surface loudly instead of being silently swallowed."}
+      }
+    },
+    {
+      "slug": "files",
+      "title": "File Handling",
+      "summary": "Save data so it survives after the program ends: read and write files safely with the with statement.",
+      "objectives": ["Write text to a file and read it back", "Use with open(...) for automatic closing", "Read line by line and process contents", "Understand file modes: w, a, r"],
+      "sections": [
+        {
+          "heading": "Programs that remember",
+          "body": "Variables vanish when a program ends. Files are how programs remember - a to-do app saves your tasks, a game saves your progress. Writing a file takes two ingredients: a **filename** and a **mode**:\n\n```python\nwith open(\"notes.txt\", \"w\") as f:\n    f.write(\"First line\\n\")\n    f.write(\"Second line\\n\")\n```\n\n- mode `\"w\"` = write. Creates the file; **overwrites** it if it exists (careful!)\n- mode `\"a\"` = append. Adds to the end, keeping old content\n- mode `\"r\"` = read (the default)\n\nThe `with` block automatically closes the file when it ends - even if an error happens inside. Always use it. `\\n` inside strings is the newline character; text files are lines joined by newlines."
+        },
+        {
+          "heading": "Reading files back",
+          "body": "Two comfortable ways:\n\n```python\n# Whole file as one string\nwith open(\"notes.txt\", \"r\") as f:\n    content = f.read()\nprint(content)\n\n# Or line by line (memory-friendly, the normal choice)\nwith open(\"notes.txt\", \"r\") as f:\n    for line in f:\n        print(line.strip())    # lines keep their \\n - strip it\n```\n\nReading a missing file raises `FileNotFoundError` - which you can catch exactly like ValueError.\n\nIn the CodeTutor Playground your program runs in its own private folder, so you can freely create and read files - they vanish after the run."
+        },
+        {
+          "heading": "A standard pattern: append a log",
+          "body": "Programs that record events use mode `\"a\"` so nothing old is ever lost:\n\n```python\nwith open(\"log.txt\", \"a\") as f:\n    f.write(\"Program started\\n\")\n```\n\nEach run adds one more line. Open the file in any editor and there is the whole history."
+        }
+      ],
+      "example": {
+        "title": "Save a list, load it back",
+        "code": "todos = [\"learn functions\", \"practise loops\", \"read a traceback\"]\n\n# SAVE: one entry per line\nwith open(\"todos.txt\", \"w\") as f:\n    for task in todos:\n        f.write(task + \"\\n\")\n\n# LOAD: read lines, strip the newline, rebuild the list\nloaded = []\nwith open(\"todos.txt\", \"r\") as f:\n    for line in f:\n        loaded.append(line.strip())\n\nprint(\"Loaded\", len(loaded), \"tasks\")\nfor task in loaded:\n    print(\"-\", task)",
+        "explanation": "The save loop writes each task followed by \\n - the file ends up as three lines. The load loop reads them back, stripping the trailing newline each time so the list matches the original exactly. This save/load pattern is the seed of every real data-persisting app. Output:\n\n```\nLoaded 3 tasks\n- learn functions\n- practise loops\n- read a traceback\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "You open \"diary.txt\" with mode \"w\" and write a new entry. What happens to the diary's previous contents?",
+          "options": ["They are kept and the new text is added at the end", "They are permanently erased - w overwrites the whole file", "They are moved to diary.bak", "An error - the file already exists"],
+          "answer": 1,
+          "explanation": "\"w\" starts the file from scratch. To add without destroying, use mode \"a\" (append)."
+        },
+        {
+          "id": "q2",
+          "question": "Why is `with open(\"f.txt\") as f:` preferred over `f = open(\"f.txt\")`?",
+          "options": ["It is shorter to type", "It closes the file automatically - even if an error occurs inside the block", "It reads files faster", "Files cannot be opened without with"],
+          "answer": 1,
+          "explanation": "The with statement guarantees close() runs when the block ends, whatever happens inside. A forgotten close can lock the file or lose buffered data."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "A persistent counter",
+        "prompt": "Write a function `log_visit(filename, name)` that APPENDS the given name to the file, then returns the TOTAL number of lines now in the file. Appending must not destroy previous content.",
+        "difficulty": 3,
+        "starter_code": "import os\n\ndef log_visit(filename, name):\n    # 1. Open the file in append mode and write name + \"\\n\"\n    # 2. Count how many lines the file now has\n    # 3. Return that count\n    pass",
+        "test_spec": {"type": "function", "tests": [{"call": "log_visit('visits.txt', 'ada')", "expected": "1"}, {"call": "log_visit('visits.txt', 'grace')", "expected": "2"}, {"call": "log_visit('visits.txt', 'alan')", "expected": "3"}]},
+        "hints": [
+          "Two steps: first open with mode 'a' and write name + \"\\n\". Then open again with mode 'r' and count lines.",
+          "Counting lines: `for line in f:` with a counter, or read all and use len(f.read().splitlines()).",
+          "After appending, open in read mode and return the line count. The tests call your function three times on the same file - each call must return the running count: 1, 2, 3."
+        ],
+        "solution": {"code": "def log_visit(filename, name):\n    with open(filename, \"a\") as f:\n        f.write(name + \"\\n\")\n    with open(filename, \"r\") as f:\n        return len(f.read().splitlines())", "explanation": "Mode \"a\" guarantees earlier visits survive, so the file grows across calls. The second open reads everything back; splitlines() splits the content into a list of lines without leaving a trailing empty entry, so len() is the true count. The tests run all three calls in the same program - 1, 2, 3 - proving persistence works."}
+      }
+    },
+    {
+      "slug": "modules",
+      "title": "Modules and Imports",
+      "summary": "Stand on the shoulders of the standard library: import ready-made functions, and organize your own code into modules.",
+      "objectives": ["Import modules with import and from-import", "Use math, random and datetime basics", "Understand what the standard library gives you", "Split your own code across files"],
+      "sections": [
+        {
+          "heading": "Importing ready-made power",
+          "body": "A **module** is a file of Python code you can pull into your program. The **standard library** ships dozens of them with Python itself - no installation needed:\n\n```python\nimport math\n\nprint(math.sqrt(16))    # 4.0 - note the module prefix: math.something\n```\n\nThe `import math` line loads the module once; then every function inside is available as `math.name`. The prefix keeps things honest - you can always tell where a function came from.\n\nThe alternative form imports specific names directly:\n\n```python\nfrom random import randint\n\nprint(randint(1, 6))     # a die roll, no prefix\n```"
+        },
+        {
+          "heading": "Four modules worth knowing first",
+          "body": "- **random** - `random.randint(1, 6)` (die roll), `random.choice(list)` (pick an item), `random.shuffle(list)`\n- **math** - `math.sqrt`, `math.pi`, `math.floor`\n- **datetime** - dates and time: `datetime.date.today()`\n- **os** - talk to the operating system: paths, folders\n\nWhen you need something generic - \"generate a random password\", \"format a date\", \"round down\" - the standard library almost certainly has it. Searching \"python <topic> module\" is a professional habit, not cheating."
+        },
+        {
+          "heading": "Your own modules",
+          "body": "Any .py file is a module. Save helpers in `utils.py` and another file can use them:\n\n```python\n# utils.py\ndef double(n):\n    return n * 2\n\n# main.py\nfrom utils import double\nprint(double(21))\n```\n\nThe import system finds files in the same folder. As programs grow past a few screens of code, splitting them into focused modules is how complexity stays manageable."
+        }
+      ],
+      "example": {
+        "title": "Building a dice roller",
+        "code": "import random\n\ndef roll_die(sides=6):\n    \"\"\"Roll one die with the given number of sides.\"\"\"\n    return random.randint(1, sides)\n\nprint(\"Three rolls of a 6-sided die:\")\nfor i in range(3):\n    print(\"  roll\", i + 1, \"=\", roll_die())\n\nprint(\"A 20-sided die:\", roll_die(20))",
+        "explanation": "random.randint(a, b) returns a whole number from a to b, inclusive - perfect for dice. The module provides the randomness; our function adds the game-specific meaning (a die with a default of 6 sides). This layering - library function inside your own function - is the everyday shape of real code. (Because randomness is involved, output differs on every run.)"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "After `import math`, how do you compute the square root of 25?",
+          "options": ["sqrt(25)", "math.sqrt(25)", "import sqrt(25)", "math(25).sqrt"],
+          "answer": 1,
+          "explanation": "With a plain `import math`, everything inside is reached through the module prefix: math.sqrt(25) gives 5.0. (from math import sqrt would allow the bare sqrt(25).)"
+        },
+        {
+          "id": "q2",
+          "question": "What is the difference between `import random` and `from random import randint`?",
+          "options": ["No difference at all", "The first requires the prefix random.randint; the second lets you call randint() directly", "The first is faster", "The second downloads randint from the internet"],
+          "answer": 1,
+          "explanation": "Both load the same module. The from-form copies just that one name into your namespace. Use the prefix when you call several things; use from-import for one or two favorites."
+        }
+      ],
+      "exercise": {
+        "kind": "mcq",
+        "title": "Choose the right module",
+        "prompt": "You are writing a quiz game and need to simulate rolling a six-sided die. Which option gives you a whole number from 1 to 6 (inclusive), using the standard library?",
+        "options": ["import math; math.randint(1, 6)", "import random; random.randint(1, 6)", "import random; random.random(1, 6)", "import dice; dice.roll(6)"],
+        "answer": 1,
+        "hints": [
+          "Which module provides randomness in the standard library?",
+          "Two of the options mention functions that do not exist in the module they name.",
+          "random.randint(1, 6) returns a whole number between 1 and 6 inclusive."
+        ],
+        "solution": {"code": "import random\nroll = random.randint(1, 6)", "explanation": "random.randint(a, b) is the standard die-roller. math has no randint; random.random() takes no arguments and returns a float between 0 and 1; and there is no dice module in the standard library. Import random, roll with randint."}
+      }
+    }
+  ]
+}

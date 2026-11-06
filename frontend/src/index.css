@@ -1,0 +1,108 @@
+@import "highlight.js/styles/github-dark.css";
+
+/* ----------------------------------------------------------------
+   CodeTutor AI - design tokens (dark by default, light via .light)
+---------------------------------------------------------------- */
+:root,
+:root.dark {
+  --bg: 11 15 20;
+  --surface: 17 22 29;
+  --surface-hover: 22 29 37;
+  --sidebar: 14 20 27;
+  --border: 31 41 51;
+  --fg: 230 237 243;
+  --muted: 139 152 165;
+  --primary: 99 102 241;
+  --primary-hover: 129 140 248;
+  --accent: 34 211 238;
+  --success: 52 211 153;
+  --warning: 251 191 36;
+  --danger: 248 113 113;
+}
+
+:root.light {
+  --bg: 245 247 249;
+  --surface: 255 255 255;
+  --surface-hover: 242 244 247;
+  --sidebar: 255 255 255;
+  --border: 226 232 238;
+  --fg: 28 37 48;
+  --muted: 92 107 122;
+  --primary: 79 70 229;
+  --primary-hover: 99 102 241;
+  --accent: 8 145 178;
+  --success: 5 150 105;
+  --warning: 180 83 9;
+  --danger: 220 38 38;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  html.light {
+    color-scheme: light;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+  }
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.35);
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-border bg-surface;
+  }
+  .input-base {
+    @apply block w-full rounded-lg border border-border bg-bg px-3 py-2
+      text-sm text-fg placeholder:text-muted focus:outline-none
+      focus:ring-2 focus:ring-primary/60;
+  }
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2
+      text-sm font-medium transition-colors focus:outline-none
+      focus-visible:ring-2 focus-visible:ring-primary/70
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  /* keep highlight.js code blocks readable in both themes */
+  pre code.hljs {
+    @apply block;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  .hljs-keyword, .hljs-selector-tag, .hljs-literal {
+    color: rgb(var(--primary-hover));
+  }
+  .hljs-string, .hljs-number, .hljs-meta .hljs-string {
+    color: rgb(var(--success));
+  }
+  .hljs-comment {
+    color: rgb(var(--muted));
+  }
+  .hljs-title, .hljs-section, .hljs-function .hljs-title {
+    color: rgb(var(--accent));
+  }
+  .hljs-built_in, .hljs-type, .hljs-attr {
+    color: rgb(var(--warning));
+  }
+}
+
+/* Thin scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}

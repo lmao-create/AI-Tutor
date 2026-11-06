@@ -1,0 +1,125 @@
+{
+  "content_version": "2026-10-12",
+  "courses": [
+    {
+      "slug": "python",
+      "title": "Python for Absolute Beginners",
+      "description": "A complete 22-lesson path from 'what is programming?' to building small real-world projects. No prior experience needed.",
+      "language": "Python",
+      "level": "beginner",
+      "status": "complete",
+      "overview": "Python is the friendliest language to learn first, and one of the most used languages in the world - in web backends, data science, automation, and AI. This course teaches you to write, read and debug your own programs step by step. Every lesson has a short explanation, a runnable example, a quiz and a practical exercise with graduated hints. Finish the lessons and the guided projects and you will be able to write useful Python programs on your own.",
+      "prerequisites": ["Nothing except basic computer use - installing a program, typing, saving files"],
+      "outline": [],
+      "order_index": 1
+    },
+    {
+      "slug": "javascript",
+      "title": "JavaScript Fundamentals",
+      "description": "The language of the web: make pages interactive and build full apps.",
+      "language": "JavaScript",
+      "level": "beginner",
+      "status": "planned",
+      "overview": "JavaScript runs in every browser and is the entry point to front-end and full-stack web development.",
+      "prerequisites": ["HTML & CSS basics (recommended)", "Any prior programming basics"],
+      "outline": ["Values, variables and types", "Functions and arrow functions", "Arrays and objects", "DOM manipulation", "Events", "async/await and fetch", "Modules and tooling"],
+      "order_index": 2
+    },
+    {
+      "slug": "typescript",
+      "title": "TypeScript Essentials",
+      "description": "Add a type system on top of JavaScript to catch bugs before running code.",
+      "language": "TypeScript",
+      "level": "intermediate",
+      "status": "planned",
+      "overview": "TypeScript is JavaScript plus types - it powers large modern codebases.",
+      "prerequisites": ["Solid JavaScript basics"],
+      "outline": ["Type annotations and inference", "Interfaces and type aliases", "Unions and generics", "Narrowing", "tsconfig and projects", "Types in real apps"],
+      "order_index": 3
+    },
+    {
+      "slug": "html-css",
+      "title": "HTML & CSS",
+      "description": "Structure and style web pages - the foundation of everything on the web.",
+      "language": "HTML/CSS",
+      "level": "beginner",
+      "status": "planned",
+      "overview": "HTML describes what a page contains; CSS describes how it looks and behaves on any screen size.",
+      "prerequisites": ["None"],
+      "outline": ["HTML documents and elements", "Text, links and images", "Semantic structure", "CSS selectors", "The box model", "Flexbox and grid", "Responsive design"],
+      "order_index": 4
+    },
+    {
+      "slug": "c",
+      "title": "C Programming",
+      "description": "Learn how computers really work: memory, pointers and close-to-the-metal code.",
+      "language": "C",
+      "level": "intermediate",
+      "status": "planned",
+      "overview": "C is small, fast and foundational - understanding it makes every other language make more sense.",
+      "prerequisites": ["Basic programming logic (any language)"],
+      "outline": ["Compilation and toolchain", "Types and memory", "Control flow", "Functions", "Pointers", "Arrays and strings", "Structs", "Dynamic memory"],
+      "order_index": 5
+    },
+    {
+      "slug": "cpp",
+      "title": "C++",
+      "description": "C with modern tools: objects, the STL and high-performance programs.",
+      "language": "C++",
+      "level": "intermediate",
+      "status": "planned",
+      "overview": "C++ powers games, engines and performance-critical software.",
+      "prerequisites": ["C basics (helpful but not required)"],
+      "outline": ["C++ basics and differences from C", "References and RAII", "Classes and inheritance", "Templates", "The STL containers and algorithms", "Smart pointers"],
+      "order_index": 6
+    },
+    {
+      "slug": "java",
+      "title": "Java",
+      "description": "Object-oriented programming with a statically typed, widely-deployed language.",
+      "language": "Java",
+      "level": "intermediate",
+      "status": "planned",
+      "overview": "Java runs on billions of devices and is a classic way to learn rigorous object-oriented design.",
+      "prerequisites": ["Basic programming logic"],
+      "outline": ["JVM and compilation", "Types and operators", "Control flow", "Classes and objects", "Interfaces and inheritance", "Collections framework", "Exceptions"],
+      "order_index": 7
+    },
+    {
+      "slug": "sql",
+      "title": "SQL & Databases",
+      "description": "Store, query and understand data with the language every database speaks.",
+      "language": "SQL",
+      "level": "beginner",
+      "status": "planned",
+      "overview": "Almost every application stores data somewhere - SQL is how you talk to it.",
+      "prerequisites": ["None"],
+      "outline": ["Tables and data types", "SELECT basics", "Filtering and sorting", "Joins", "Aggregation and grouping", "Designing schemas", "Indexes and performance basics"],
+      "order_index": 8
+    },
+    {
+      "slug": "git-github",
+      "title": "Git & GitHub",
+      "description": "Track your code, undo mistakes and collaborate like professional developers.",
+      "language": "Git",
+      "level": "beginner",
+      "status": "planned",
+      "overview": "Version control is a core professional skill - start using it from your first project.",
+      "prerequisites": ["Basic command line comfort helps"],
+      "outline": ["Why version control", "Repositories and commits", "Viewing history and undoing", "Branches", "Merging and conflicts", "GitHub: remotes and pull requests"],
+      "order_index": 9
+    },
+    {
+      "slug": "dsa",
+      "title": "Data Structures & Algorithms",
+      "description": "Think about efficiency: choose the right structure and reason about complexity.",
+      "language": "Python",
+      "level": "advanced",
+      "status": "planned",
+      "overview": "Level up from writing programs that work to writing programs that scale.",
+      "prerequisites": ["Comfort with Python functions and classes (the Python path covers this)"],
+      "outline": ["Big-O notation", "Arrays and linked lists", "Stacks and queues", "Hash tables", "Trees and traversal", "Sorting", "Searching", "Recursion and dynamic programming basics"],
+      "order_index": 10
+    }
+  ]
+}

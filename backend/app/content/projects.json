@@ -1,0 +1,285 @@
+{
+  "projects": [
+    {
+      "slug": "number-guessing-game",
+      "title": "Number Guessing Game",
+      "description": "The classic first project: the computer picks a secret number, the player guesses, and the program guides them with 'higher' or 'lower' until they win.",
+      "difficulty": 1,
+      "language": "python",
+      "skills": ["random module", "while loops", "input validation with try/except", "counters", "if/elif/else"],
+      "requirements": ["Pick a random number between 1 and 100", "Read guesses from the player", "Answer 'too low' or 'too high' after each guess", "Announce the win and how many attempts it took", "Survive non-numeric input without crashing"],
+      "milestones": [
+        {
+          "title": "Skeleton that runs",
+          "goal": "A program that greets the player and reads one guess, even if nothing is computed yet.",
+          "guidance": "Start embarrassingly small. Print a welcome line, read a guess with input(), convert it with int(), and print it back. Run it. Yes, that is the whole milestone - a program that runs end to end beats a brilliant plan that never runs.\n\nSuggested shape:\n```python\nprint(\"Welcome to the Guessing Game!\")\nraw = input(\"Your guess: \")\nprint(\"You typed:\", raw)\n```"
+        },
+        {
+          "title": "The core loop",
+          "goal": "A secret number, a while loop, and higher/lower feedback until the player wins.",
+          "guidance": "Add `import random` and `secret = random.randint(1, 100)` ABOVE the loop. Then `while True:` read a guess, and compare it three ways - too low, too high, or correct. On correct: print a victory message and `break`. Test it with a known secret first (temporarily set `secret = 42`) so you can verify each branch. You already built exactly this comparison logic as a function in the final lesson - reuse it here if you like."
+        },
+        {
+          "title": "Attempts and safety",
+          "goal": "Count attempts and never crash on bad input.",
+          "guidance": "Add an `attempts = 0` counter before the loop and `attempts += 1` after each valid guess. Report the count in the victory message with an f-string: `f\"You got it in {attempts} tries!\"`.\n\nWrap the conversion in `try: guess = int(raw) / except ValueError:` - print a friendly message and `continue` (skip the rest of this round). A quiz game that dies on \"seven\" is not a game. Verify: type letters, an empty line, then a real guess - all three must behave."
+        },
+        {
+          "title": "Polish and play",
+          "goal": "A replay option and a fair difficulty feel.",
+          "guidance": "Optional but satisfying: after a win, ask `input(\"Play again? (y/n) \")` and wrap the game in an outer loop so `y` starts a fresh round (new secret, attempts reset). Also print the guess number before each prompt: `f\"Guess #{attempts + 1}: \"` so the player feels the progress. Play a few rounds yourself, then have someone else play and watch where they hesitate."
+        }
+      ],
+      "starter_code": "import random\n\nprint(\"Welcome to the Guessing Game!\")\n# Milestone 2: pick the secret and start the game loop\n# Milestone 3: count attempts, guard the input with try/except\n",
+      "testing_instructions": "1. Type a non-number (like 'abc') at the prompt - the program must complain, not crash.\n2. Guess below the secret - it must say too low; above - too high.\n3. Win and check the attempt count is correct (deliberately lose 3 times first).\n4. With secret temporarily hardcoded to 42, verify every branch quickly.\n5. In the Playground: use the stdin box to feed guesses one per line (the program reads them in order).",
+      "challenges": ["Limit the player to 7 attempts with a 'game over' reveal of the secret", "Let the player choose a difficulty that changes the range (1-10, 1-100, 1-1000)", "Save the best (lowest) attempt count to a file and show it at startup"]
+    },
+    {
+      "slug": "calculator",
+      "title": "Command-Line Calculator",
+      "description": "A calculator that reads two numbers and an operation, then loops for more calculations - with honest error handling for divide-by-zero.",
+      "difficulty": 1,
+      "language": "python",
+      "skills": ["functions", "return values", "while loops", "exception handling", "the math operators"],
+      "requirements": ["Read two numbers and an operation (+, -, *, /)", "Perform the calculation and print the result", "Refuse division by zero with a friendly message", "Accept invalid numbers without crashing", "Loop until the player chooses to quit"],
+      "milestones": [
+        {
+          "title": "One calculation, hardcoded",
+          "goal": "Compute and print a single addition from two inputs.",
+          "guidance": "Read two numbers with `float(input(...))` and print their sum. That's it - build the smallest runnable thing first:\n```python\na = float(input(\"First number? \"))\nb = float(input(\"Second number? \"))\nprint(\"Sum:\", a + b)\n```"
+        },
+        {
+          "title": "Four operations",
+          "goal": "Ask which operation to perform and dispatch to it.",
+          "guidance": "Read the operation as text with `input(\"Operation (+ - * /)? \")` and compare it with if/elif. Because if/elif/else over four operations gets long, the clean version is one small function per operation, plus a `calculate(a, op, b)` function that returns the result for the right one. Print the returned value - do not print inside the helpers (that lesson about return vs print exists for exactly this moment)."
+        },
+        {
+          "title": "Safety: bad numbers and zero",
+          "goal": "Non-numeric input and division by zero never crash the program.",
+          "guidance": "Wrap the number reading in a try/except ValueError loop like the one from the exceptions lesson. For division: check `if b == 0:` and print \"Cannot divide by zero\" instead of computing - or catch ZeroDivisionError. Decide: is your calculator's job to crash on nonsense, or keep working? Keep working. Test both failure paths before moving on."
+        },
+        {
+          "title": "The main loop",
+          "goal": "Keep calculating until the player types 'q'.",
+          "guidance": "Wrap everything in `while True:`. At the top ask for the operation; if it equals `\"q\"`, `break`. Otherwise run one full calculation and loop. Print a goodbye line after the loop. Optionally show a running count: `f\"Calculation #{n} done\"`."
+        }
+      ],
+      "starter_code": "def add(a, b):\n    return a + b\n\n# Milestone 2: subtract, multiply, divide functions\n# Milestone 3: read numbers safely (try/except), refuse /0\n# Milestone 4: while True loop, 'q' to quit\n\nprint(\"Calculator - enter 'q' as the operation to quit\")\n",
+      "testing_instructions": "1. Addition: 2 + 3 must print 5. Subtraction: 10 - 4 must print 6.\n2. Multiplication and division with decimals: 2.5 * 4 = 10.0, 7 / 2 = 3.5.\n3. Divide 5 by 0 - friendly message, no crash.\n4. Type 'banana' as a number - asked again, no crash.\n5. Type 'q' - program exits cleanly with a goodbye.",
+      "challenges": ["Add power (**) and floor division (//) as operations", "Keep a history list of calculations and add a 'history' command to print it", "Support expressions like '3 + 4' typed on one line (split the input on spaces)"]
+    },
+    {
+      "slug": "quiz-application",
+      "title": "Quiz Application",
+      "description": "Build a real quiz engine: questions in a data structure, answer checking, and a score report at the end.",
+      "difficulty": 2,
+      "language": "python",
+      "skills": ["lists and dicts", "for loops", "functions", "counters and scoring", "string comparison"],
+      "requirements": ["Store at least 5 questions with answer options and the correct answer", "Ask them one at a time with numbered options", "Check answers (case-insensitively where sensible) and track the score", "Print a final score with the unanswered/wrong topics", "No crash on out-of-range menu choices"],
+      "milestones": [
+        {
+          "title": "The data model",
+          "goal": "Represent your quiz as a list of dicts.",
+          "guidance": "Before any interaction, decide how a question is STORED. The classic shape:\n```python\nquestions = [\n    {\"q\": \"What does len() return?\",\n     \"options\": [\"a list\", \"the length\", \"the last item\"],\n     \"answer\": 1},\n]\n```\nWrite all 5 questions this way first. This milestone has no input() - it is pure data, and it is the most important design step of the project."
+        },
+        {
+          "title": "Ask one question",
+          "goal": "Print a question with its options and read a numbered answer.",
+          "guidance": "Write `ask_question(question)` that prints `question[\"q\"]`, loops over `enumerate(question[\"options\"])` printing `1) option`, reads a number, and RETURNS it. Test it in isolation: does it return the number the player typed? Remember: return, don't print the answer."
+        },
+        {
+          "title": "The quiz loop and scoring",
+          "goal": "Ask every question, compare answers, keep score.",
+          "guidance": "Loop over `questions`, call `ask_question`, and compare the returned number with `question[\"answer\"]` (mind the off-by-one: options print as 1, 2, 3 but list indexes start at 0 - store your answers to match YOUR convention and be consistent). Increment `score` on hits, collect wrong ones in a `missed` list. End by printing `f\"You scored {score}/{len(questions)}\"` plus the missed question texts for review."
+        },
+        {
+          "title": "Robust input",
+          "goal": "Invalid menu choices re-ask instead of crashing.",
+          "guidance": "In ask_question, wrap `int(input(...))` in try/except ValueError. Then verify the number is within range (1..len(options)); if not, print the valid range and loop. Only return once the answer is genuinely usable."
+        }
+      ],
+      "starter_code": "questions = [\n    {\"q\": \"What does len() return?\",\n     \"options\": [\"a list\", \"the length of something\", \"the last item\"],\n     \"answer\": 1},\n    # add 4+ more questions here\n]\n\ndef ask_question(question):\n    \"\"\"Print one question and return the chosen option number.\"\"\"\n    # Milestone 2: print q and options, read a number, return it\n    pass\n\n# Milestone 3: loop, compare, score\n",
+      "testing_instructions": "1. Answer all questions correctly - the score must be 5/5.\n2. Answer all wrong - 0/5 with all questions listed as missed.\n3. Type 'x' or 99 at a prompt - the program re-asks, no crash.\n4. Add a question with 4 options and confirm answer indexes still line up.",
+      "challenges": ["Shuffle the question order with random.shuffle (on a copy of the list!)", "Time the quiz with datetime and report seconds taken", "Weight questions: easy = 1 point, hard = 2 points"]
+    },
+    {
+      "slug": "to-do-list",
+      "title": "To-Do List",
+      "description": "The everyday app: add tasks, list them, mark them done, remove them - and save everything to a file so it survives restarts.",
+      "difficulty": 2,
+      "language": "python",
+      "skills": ["lists", "dictionaries", "while loops", "file handling", "menu design"],
+      "requirements": ["Menu loop: add / list / done / remove / quit", "Tasks have a description and a done flag", "The \"list\" view shows status like [ ] buy milk / [x] walk dog", "Save tasks to a file on every change", "Load tasks from the file at startup"],
+      "milestones": [
+        {
+          "title": "In-memory to-do",
+          "goal": "Add and list tasks, no files yet.",
+          "guidance": "Represent each task as a dict: `{\"text\": \"buy milk\", \"done\": False}` inside a `tasks` list. Build a menu loop: print the options, read the choice, and handle at least 'add' (input + append) and 'list' (loop with `for i, task in enumerate(tasks, 1):` and print `f\"{i}. [{'x' if task['done'] else ' '}] {task['text']}\"`). Run it: add three tasks, list them."
+        },
+        {
+          "title": "Mark done and remove",
+          "goal": "Change and delete tasks by their number.",
+          "guidance": "For 'done', read a task number, then set `tasks[n - 1][\"done\"] = True` (mind the 1-based menu vs 0-based indexes - a classic off-by-one spot). For 'remove', use `tasks.pop(n - 1)`. Guard both: a number outside the range must print an error, not raise IndexError. Empty list must not crash either."
+        },
+        {
+          "title": "Persistence",
+          "goal": "Tasks survive program restarts.",
+          "guidance": "Save with `open(\"todos.txt\", \"w\")`: one line per task, done-flagged first - `\"x|buy milk\"` or `\" |buy milk\"`. Load at startup with mode `\"r\"` inside try/except FileNotFoundError (first run: start with an empty list). Split each line on \"|\" and rebuild the dicts. Save after EVERY change, then test the hard way: add a task, quit, run again - is it still there?"
+        }
+      ],
+      "starter_code": "tasks = []   # each task: {\"text\": \"...\", \"done\": False}\n\n# Milestone 1: menu loop with add + list\n# Milestone 2: done + remove by number, with range checks\n# Milestone 3: load from todos.txt at start, save after each change\n\nprint(\"To-Do List - options: add / list / done / remove / quit\")\n",
+      "testing_instructions": "1. Add 3 tasks, list - numbering and [ ] boxes correct.\n2. Mark #2 done - list shows [x] on it and only it.\n3. Remove #1 - numbering reflows without error.\n4. Choose done/remove with an empty list or a bad number - friendly error.\n5. Quit, restart - tasks (and their done flags) are still there.",
+      "challenges": ["Add priorities (high/low) and sort the list view by priority", "Add due dates with datetime and flag overdue tasks", "Use a dict of tasks with ids instead of list positions, so numbers stay stable"]
+    },
+    {
+      "slug": "password-generator",
+      "title": "Password Generator",
+      "description": "Generate strong passwords: ask for length and character sets, then build random passwords and measure their strength.",
+      "difficulty": 2,
+      "language": "python",
+      "skills": ["random module", "string handling", "functions with parameters", "list building", "input validation"],
+      "requirements": ["Ask for the desired length (with a sensible minimum)", "Guarantee at least one lowercase, uppercase, digit and symbol in every password", "Generate the rest randomly and shuffle", "Offer to generate several at once", "Never include characters that look confusing (l, 1, O, 0) as an option"],
+      "milestones": [
+        {
+          "title": "Random letters",
+          "goal": "Produce a random string of a given length.",
+          "guidance": "Start with the core mechanic. `import random` and `import string` - string gives ready-made alphabets: `string.ascii_lowercase`, `.ascii_uppercase`, `.digits`, `.punctuation`. Build `random.choice(chars)` inside a loop, or better: `\"\".join(random.choices(chars, k=length))`. Print one password of length 12."
+        },
+        {
+          "title": "Guarantee every set",
+          "goal": "No matter the dice, the password contains all four character kinds.",
+          "guidance": "Pure random can produce a password with no digit at all. The fix: pick ONE character from each required set first, fill the rest randomly, then shuffle - `random.shuffle` works on lists, so build the password as a list of characters and `\"\".join` it at the end. This 'guarantee then fill' pattern is a real algorithm design move."
+        },
+        {
+          "title": "Length choice and validation",
+          "goal": "The user picks the length; nonsense is refused.",
+          "guidance": "Read the length with the safe-number loop from the exceptions lesson. Enforce a minimum (say 8): below it, either re-ask or explain and bump up. Then wrap the generator as `generate_password(length)` and add a loop: `input(\"How many passwords? \")` - generate that many, each on its own line, all different (if you ever see two identical ones, you forgot to shuffle properly)."
+        }
+      ],
+      "starter_code": "import random\nimport string\n\n# Milestone 1: random string from a character set\n# Milestone 2: guarantee one of each set, then shuffle\n# Milestone 3: generate_password(length) + count loop\n\nprint(\"Password Generator\")\n",
+      "testing_instructions": "1. Generate 5 passwords of length 16 - each contains upper, lower, digit and symbol (eyeball a few).\n2. Try length 3 - program refuses or corrects politely.\n3. Try typing 'eight' - program re-asks.\n4. Length 8 works and never shows two identical passwords in one batch.",
+      "challenges": ["Add an exclude-confusing option (no l, 1, O, 0, I)", "Estimate strength: count distinct characters and length, print weak/ok/strong", "Generate passphrases from a small word list instead of random characters"]
+    },
+    {
+      "slug": "expense-tracker",
+      "title": "Simple Expense Tracker",
+      "description": "Record expenses with amounts and categories, then see totals per category and a simple monthly report - persisted to a file.",
+      "difficulty": 2,
+      "language": "python",
+      "skills": ["dictionaries for aggregation", "file handling", "functions", "f-string formatting", "data validation"],
+      "requirements": ["Add an expense: description, amount, category", "Refuse empty descriptions and non-numeric or negative amounts", "List all expenses with a running total", "Show totals per category (the summary)", "Save/load expenses from a file"],
+      "milestones": [
+        {
+          "title": "Add and list",
+          "goal": "In-memory expenses with a list view and running total.",
+          "guidance": "Each expense: `{\"desc\": \"coffee\", \"amount\": 4.5, \"cat\": \"food\"}`. The add path reads three values (validate the amount with try/except float() and reject negatives). The list view loops with a total accumulator. Menu loop like the to-do project: add / list / summary / quit."
+        },
+        {
+          "title": "Category summary",
+          "goal": "Totals grouped by category.",
+          "guidance": "This is the counting-dict pattern from the dictionaries lesson, but summing instead of counting: `totals = {}` then `for e in expenses: totals[e[\"cat\"]] = totals.get(e[\"cat\"], 0) + e[\"amount\"]`. Print each category with a total, formatted as money: `f\"{total:.2f}\"`. Print the grand total too - the sums must agree with the list view."
+        },
+        {
+          "title": "Persistence",
+          "goal": "Expenses survive restarts, loaded safely.",
+          "guidance": "File format: one expense per line as `description|amount|category`, mode `\"a\"` on add (or rewrite all after each change with \"w\" - simpler and safe here). At startup, read inside try/except FileNotFoundError; a malformed line (wrong number of parts, bad float) is SKIPPED with a warning, not a crash - real-world data is messy. Round money to 2 decimals when printing: `f\"{value:.2f}\"`."
+        }
+      ],
+      "starter_code": "expenses = []   # each: {\"desc\": \"...\", \"amount\": 0.0, \"cat\": \"...\"}\n\n# Milestone 1: menu loop - add (validated) + list with total\n# Milestone 2: summary grouped by category\n# Milestone 3: load/save expenses.txt (desc|amount|cat)\n\nprint(\"Expense Tracker - options: add / list / summary / quit\")\n",
+      "testing_instructions": "1. Add 'coffee' 4.5 food and 'bus' 2.75 transport; list shows both, total 7.25.\n2. Try adding 'goldfish' with amount 'fish' or -5 - refused politely.\n3. Summary shows food: 4.50 and transport: 2.75, with a correct grand total.\n4. Restart - the expenses reload; the summary matches the list.\n5. Corrupt one line in the file by hand - the program skips it with a warning, still starts.",
+      "challenges": ["Add dates with datetime and filter the report to this month", "Add budgets per category and warn when a total passes its budget", "Find the most expensive single expense and the biggest category programmatically"]
+    },
+    {
+      "slug": "text-adventure",
+      "title": "Text-Based Adventure Game",
+      "description": "Rooms, choices and consequences: build a small explorable world driven by data and a game loop.",
+      "difficulty": 3,
+      "language": "python",
+      "skills": ["dict-of-dicts data design", "game loop", "functions", "state (inventory, health)", "string formatting"],
+      "requirements": ["At least 5 rooms connected by named exits", "Each room has a description shown on entry", "The player can move between rooms until reaching an end (win or lose)", "At least one item to find and one simple use for it", "Data-driven design: rooms are dicts, not endless if/else"],
+      "milestones": [
+        {
+          "title": "Design the world",
+          "goal": "Write the map as pure data.",
+          "guidance": "The whole game lives or dies here. One dict per room, keyed by name, with a description and exits:\n```python\nrooms = {\n    \"hall\": {\n        \"desc\": \"A dusty hall. Doors lead north.\",\n        \"exits\": {\"north\": \"library\"},\n    },\n}\n```\nDesign 5+ rooms on paper first (draw boxes and arrows), THEN transcribe them into dicts. Include an ending room (e.g. \"vault\" with the treasure) and at least one dead end."
+        },
+        {
+          "title": "Walk the map",
+          "goal": "The explore loop: describe room, read direction, move.",
+          "guidance": "`current = \"hall\"`; then `while True:` print `rooms[current][\"desc\"]` and available exits, read a direction, and look it up in the exits dict. Unknown direction: print the valid ones. Valid: move. Make the loop end when the player enters a room whose dict contains `\"ending\": \"win\"` or `\"ending\": \"lose\"` - check it after each move and print the final text."
+        },
+        {
+          "title": "Items and obstacles",
+          "goal": "Something to find, and a door that refuses without it.",
+          "guidance": "Add `\"item\": \"key\"` to one room and an `inventory = []` list. On entering a room, if it has an item not yet taken, offer `input(\"Take it? (y/n) \")` and append it. Put a locked door in an exit description: before moving `north` from the hall, check whether `\"key\" in inventory` - without it, print the refusal instead of moving. Now the game has a goal and a rule."
+        },
+        {
+          "title": "Make it yours",
+          "goal": "Story polish and a second puzzle path.",
+          "guidance": "Write descriptions that show, not tell ('mossy stones' beats 'it is a room'). Add one more mechanic of your choice: a health counter lowered by a trap room, a riddle that must be answered with input().lower() == \"moon\", or a score that counts rooms discovered. Then have a friend play it WITHOUT hints and watch silently - every confused pause marks a description to improve."
+        }
+      ],
+      "starter_code": "rooms = {\n    \"hall\": {\n        \"desc\": \"A dusty hall. Exits: north\",\n        \"exits\": {\"north\": \"library\"},\n    },\n    # Milestone 1: design 4+ more rooms, one with an \"item\",\n    # one with an \"ending\": \"win\" or \"lose\"\n}\n\ninventory = []\ncurrent = \"hall\"\n\n# Milestone 2: while True loop - describe, read direction, move\n",
+      "testing_instructions": "1. Walk every exit path - no room with an exit pointing at a room name that does not exist (KeyError check).\n2. Try the locked exit without the item - refusal text, no crash.\n3. Take the item, unlock, reach the ending - the loop terminates cleanly.\n4. Type a nonsense direction - the game lists valid exits.\n5. Play the whole game start to finish without touching the code.",
+      "challenges": ["Add a trap room that ends the game, with a warning description nearby", "Randomize one event per turn (random.choice from a small events list)", "Support 'look' to re-print the room and 'inventory' to list what you carry"]
+    },
+    {
+      "slug": "api-client",
+      "title": "Basic API Client (JSON first, network last)",
+      "description": "Learn how programs talk to web APIs. You will parse real API-shaped JSON and build request logic in the sandbox, then make one live call from your own computer - the playground sandbox blocks network by design, so the final milestone runs locally.",
+      "difficulty": 3,
+      "language": "python",
+      "skills": ["json module", "dict/list navigation", "string building", "URLs and query parameters", "try/except for data problems"],
+      "requirements": ["Parse a saved JSON response into useful output", "Build a request URL from user options", "Handle missing keys gracefully (.get with defaults)", "Understand status codes and what 200/404/429 mean", "One live call from your own Python install (not the playground)"],
+      "milestones": [
+        {
+          "title": "Read the response",
+          "goal": "Parse saved JSON and extract structured information.",
+          "guidance": "APIs answer with JSON - text that Python turns into dicts and lists. Save a real response (from docs, e.g. open-meteo.com or openweathermap examples) into a file, then:\n```python\nimport json\nwith open(\"sample.json\") as f:\n    data = json.load(f)\n```\nPractice digging: print individual fields, loop over a list inside, and use `.get(\"key\", default)` so a missing field never crashes. Navigating nested data is 90% of API work."
+        },
+        {
+          "title": "Build the request",
+          "goal": "Assemble the correct URL from parameters.",
+          "guidance": "The request is just a string. Practice building URLs with parameters and f-strings: base + `f\"?city={city}&units=metric\"`. Write `build_url(city, units)` returning the full string. Also handle the messy input: strip spaces, replace spaces in city names with `+`. This function is fully testable in the sandbox - no network needed."
+        },
+        {
+          "title": "The live call (run this locally)",
+          "goal": "One real request from your own computer.",
+          "guidance": "On YOUR Python install (not the sandbox - it blocks network on purpose):\n```python\nimport urllib.request\nwith urllib.request.urlopen(url) as resp:\n    print(resp.status)\n    data = json.load(resp)\n```\nWrap in try/except: urllib.error.HTTPError for 4xx/5xx (404 = wrong path, 429 = rate limited), URLError for connection problems. Print the status code and parse the body exactly like milestone 1. You have now talked to a real API."
+        }
+      ],
+      "starter_code": "import json\n\n# Milestone 1: parse sample.json - extract fields, loop lists, use .get\n# Milestone 2: build_url(city, units) with clean parameters\n# Milestone 3 (local Python, network blocked in sandbox): urlopen + status codes\n\nprint(\"API client\")\n",
+      "testing_instructions": "1. In the sandbox: sample.json parses; every field extraction uses .get or checks keys - delete a key from the sample and re-run, no crash.\n2. build_url outputs the exact URL you expect for (\"New York\", \"metric\") - spaces become +, parameters in order.\n3. Locally: a real call prints status 200 then structured data.\n4. Locally: request a nonsense city - your program reports the 404 politely, does not traceback.\n5. Disconnect the internet locally - URLError handled with a clear message.",
+      "challenges": ["Cache the last response to a file and reuse it when the API is unreachable", "Pretty-print chosen fields in a small table instead of dumping raw JSON", "Compare two cities in one run by looping over a list of names"]
+    },
+    {
+      "slug": "vocabulary-flashcards",
+      "title": "Vocabulary Flashcards",
+      "description": "A study tool with spaced-repetition heart: cards you know well come back rarely, shaky ones return soon.",
+      "difficulty": 3,
+      "language": "python",
+      "skills": ["list of dicts", "random module", "file persistence", "scoring logic", "while loops"],
+      "requirements": ["A deck of at least 10 word/definition cards", "Show the word, reveal the definition on demand", "Ask 'did you know it?' and track per-card results", "Cards answered wrong come back within the same session", "Save the deck plus per-card stats to a file"],
+      "milestones": [
+        {
+          "title": "The deck",
+          "goal": "Cards as data, one quiz round.",
+          "guidance": "Represent each card as `{\"front\": \"variable\", \"back\": \"a named value in memory\", \"right\": 0, \"wrong\": 0}`. Build the 10-card list, then one round: pick a random card (random.choice), print the front, wait for input(\"Press Enter to reveal\"), print the back, and ask `input(\"Did you know it? (y/n) \")` - update the counter. Ten rounds, then show how many you knew."
+        },
+        {
+          "title": "Repeat the shaky ones",
+          "goal": "Wrong cards reappear until they stick.",
+          "guidance": "Keep a `queue` list initialized as a shuffled copy of the deck. Take the first card; if answered wrong, append it to the END of the queue; if right, leave it out of the queue (or re-insert far away: `queue.insert(min(len(queue) - 1, 4), card)`). Loop until the queue is empty. That single mechanic is spaced repetition in miniature - the cards you struggle with simply get more turns."
+        },
+        {
+          "title": "Persistence and report",
+          "goal": "Progress survives sessions; a report shows weak spots.",
+          "guidance": "Save the deck after each session to `deck.txt` as front|back|right|wrong lines (load at startup like the to-do project, skipping bad lines). Add a 'report' option: loop over cards and print those with `wrong > 0` sorted worst-first - `sorted(deck, key=lambda c: c[\"wrong\"], reverse=True)`. Your future study sessions now start where the struggle is."
+        }
+      ],
+      "starter_code": "import random\n\n# Milestone 1: 10-card deck, one round with reveal + y/n\n# Milestone 2: queue - wrong cards reappear until mastered\n# Milestone 3: save/load deck.txt, worst-first report\n\ncards = [\n    {\"front\": \"variable\", \"back\": \"a named value in memory\", \"right\": 0, \"wrong\": 0},\n    # add 9 more cards\n]\nprint(\"Flashcards\")\n",
+      "testing_instructions": "1. One session of 10 rounds runs; counters update per answer.\n2. Answer 'no' on a card - it must reappear later in the same session.\n3. Quit mid-session and restart - deck and per-card stats reload.\n4. 'report' lists cards with wrong > 0, worst first.",
+      "challenges": ["Add multiple decks (python terms, spanish words) with a deck picker", "Streak bonus: 3 right answers in a row retire the card for this session", "Multiple-choice mode: show 4 backs, pick the matching one"]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "course_slug": "python",
+  "lessons": [
+    {
+      "slug": "operators",
+      "title": "Arithmetic and Comparison Operators",
+      "summary": "Do math with operators, compare values, and understand the results comparisons produce.",
+      "objectives": ["Use +, -, *, /, //, % and ** correctly", "Compare values with ==, !=, <, >, <=, >=", "Know that comparisons produce True or False"],
+      "sections": [
+        {
+          "heading": "Arithmetic operators",
+          "body": "Python has seven arithmetic operators:\n\n- `7 + 2` → 9, `7 - 2` → 5, `7 * 2` → 14\n- `7 / 2` → 3.5 (**always** a float in Python 3)\n- `7 // 2` → 3 (floor division - throws away the remainder)\n- `7 % 2` → 1 (modulo - the remainder after division)\n- `7 ** 2` → 49 (power)\n\n`//` and `%` are surprisingly useful. `% 2` tells you if a number is even (`n % 2 == 0`). `% 60` converts seconds to minutes-and-seconds. `// 60` counts whole minutes.\n\nNormal math precedence applies (`*` before `+`), and parentheses override it. Comparisons bind looser than arithmetic: `2 + 3 == 5` is True because `2 + 3` is evaluated first."
+        },
+        {
+          "heading": "Comparison operators",
+          "body": "Comparisons ask a yes/no question about two values:\n\n- `5 == 5` → True (equal - note: TWO `=` signs)\n- `5 != 3` → True (not equal)\n- `5 > 3`, `5 >= 5`, `3 < 5`, `5 <= 5`\n\nThe result is a **bool**: `True` or `False`. This is a real value you can store:\n\n```python\nis_even = 10 % 2 == 0\nprint(is_even)   # True\n```\n\nThe classic beginner mistake: `=` assigns, `==` compares. `x = 5` stores; `x == 5` asks."
+        }
+      ],
+      "example": {
+        "title": "Remainders in real life: time",
+        "code": "total_seconds = 125\nminutes = total_seconds // 60\nseconds = total_seconds % 60\nprint(\"125 seconds is\", minutes, \"min\", seconds, \"sec\")\n\nis_even_minute = minutes % 2 == 0\nprint(\"Even minute?\", is_even_minute)",
+        "explanation": "125 // 60 is 2 (two whole minutes) and 125 % 60 is 5 (five seconds left over). Then 2 % 2 == 0 is True. Floor division counts *how many times* 60 fits; modulo reports *what is left*. Output:\n\n```\n125 seconds is 2 min 5 sec\nEven minute? True\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "What is the value of `17 % 5`?",
+          "options": ["3", "2", "3.4", "0"],
+          "answer": 1,
+          "explanation": "17 = 5*3 + 2. The modulo operator returns the remainder 2. (17 // 5 would be 3.)"
+        },
+        {
+          "id": "q2",
+          "question": "What does `4 + 3 == 7` evaluate to?",
+          "options": ["7", "True", "False", "An error"],
+          "answer": 1,
+          "explanation": "Arithmetic happens first (4 + 3 = 7), then the comparison asks if 7 equals 7 - which is True."
+        }
+      ],
+      "exercise": {
+        "kind": "predict_output",
+        "title": "Trace the arithmetic",
+        "prompt": "What does this program print?\n\n```python\nprint(10 // 3, 10 % 3, 2 ** 3)\n```",
+        "difficulty": 2,
+        "answer": {"output": "3 1 8"},
+        "hints": [
+          "Three expressions are printed, separated by spaces - evaluate each one separately.",
+          "10 // 3 is how many whole times 3 fits in 10; 10 % 3 is what remains.",
+          "3 fits in 10 three times with 1 left over; 2 ** 3 is 2*2*2."
+        ],
+        "solution": {"code": "3 1 8", "explanation": "10 // 3 = 3 (floor division), 10 % 3 = 1 (remainder), 2 ** 3 = 8 (2 raised to the power 3). print inserts a single space between values: `3 1 8`."}
+      }
+    },
+    {
+      "slug": "conditionals",
+      "title": "if, elif and else",
+      "summary": "Make programs decide: run some code only when a condition is true, with clean alternatives otherwise.",
+      "objectives": ["Write if / elif / else decisions", "Understand indentation as Python's structure", "Combine conditions with and, or, not"],
+      "sections": [
+        {
+          "heading": "Making decisions with if",
+          "body": "Programs become interesting when they can react. An `if` runs a block of code **only when** its condition is True:\n\n```python\ntemp = 30\nif temp > 25:\n    print(\"It's warm today!\")\n```\n\nTwo rules that trip up every beginner:\n\n1. The condition line ends with a **colon** `:`\n2. The code under `if` is **indented** (4 spaces). The indentation IS the structure - Python uses it instead of brackets to know what belongs inside the `if`."
+        },
+        {
+          "heading": "else and elif",
+          "body": "`else` provides the alternative - no condition needed:\n\n```python\nif temp > 25:\n    print(\"Warm\")\nelse:\n    print(\"Not warm\")\n```\n\nWhen there are several cases, `elif` (\"else if\") checks conditions in order and stops at the first true one:\n\n```python\nif temp > 30:\n    print(\"Hot\")\nelif temp > 20:\n    print(\"Pleasant\")\nelif temp > 10:\n    print(\"Cool\")\nelse:\n    print(\"Cold\")\n```\n\nExactly ONE branch runs. Once a condition matches, the rest are skipped. Order matters: put the most specific checks first."
+        },
+        {
+          "heading": "Combining conditions",
+          "body": "Combine bools with `and` (both must be true), `or` (at least one) and `not` (flip):\n\n```python\nage = 15\nif age >= 13 and age <= 19:\n    print(\"Teenager\")\n```\n\nRead it aloud: \"age is at least 13 AND age is at most 19\". `or` is inclusive in Python - `True or True` is True."
+        }
+      ],
+      "example": {
+        "title": "A grading program",
+        "code": "score = 78\n\nif score >= 90:\n    print(\"Grade: A\")\nelif score >= 80:\n    print(\"Grade: B\")\nelif score >= 70:\n    print(\"Grade: C\")\nelse:\n    print(\"Keep practising!\")\n\npassed = score >= 60\nif passed:\n    print(\"You passed the quiz.\")",
+        "explanation": "78 fails the first two checks (90, 80), then matches `score >= 70` - so only `Grade: C` prints and the remaining branches are skipped entirely. The second `if` is separate: it stores a bool and prints a second line. Output:\n\n```\nGrade: C\nYou passed the quiz.\n```"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "With `x = 5`, what does this print?\n```python\nif x > 10:\n    print(\"big\")\nelif x > 3:\n    print(\"medium\")\nelif x > 0:\n    print(\"small\")\n```",
+          "options": ["big", "medium", "small", "medium then small"],
+          "answer": 1,
+          "explanation": "Conditions are checked top to bottom and stop at the first match: 5 > 10 is False, 5 > 3 is True, so medium prints and small is never checked."
+        },
+        {
+          "id": "q2",
+          "question": "Which line has a bug?\n```python\n1: if temperature > 30:\n2:     print(\"Hot\")\n3: else:\n4: print(\"Not hot\")\n```",
+          "options": ["Line 1", "Line 2", "Line 3", "Line 4"],
+          "answer": 3,
+          "explanation": "Line 4 is not indented. The body of else must be indented by the same amount as print(\"Hot\") - otherwise Python raises an IndentationError (or worse, reads it as unrelated code)."
+        }
+      ],
+      "exercise": {
+        "kind": "find_bug",
+        "title": "Find the syntax error",
+        "prompt": "This program refuses to run. Which line contains the bug?\n\n```python\n1: age = 20\n2: if age = 18:\n3:     print(\"Exactly 18\")\n4: else:\n5:     print(\"Not 18\")\n```",
+        "difficulty": 1,
+        "answer": {"line": 2},
+        "hints": [
+          "The bug is on the condition line - look closely at the operator.",
+          "One `=` and two `==` do completely different jobs in Python.",
+          "Line 2 uses `=` (assignment) inside the if. Comparing for equality needs `==`."
+        ],
+        "solution": {"code": "if age == 18:", "explanation": "`=` stores a value; `==` compares two values. A condition must ask a question, so it needs the comparison operator: `if age == 18:`. Python raises a SyntaxError the moment it sees assignment inside an if."}
+      }
+    },
+    {
+      "slug": "loops",
+      "title": "for and while Loops",
+      "summary": "Repeat work without repeating yourself: count through ranges, walk through sequences, and loop until a condition changes.",
+      "objectives": ["Use for with range() to repeat a fixed number of times", "Loop over strings and lists", "Use while for open-ended repetition", "Stop loops with break and skip with continue"],
+      "sections": [
+        {
+          "heading": "for loops with range()",
+          "body": "When you know how many times something should happen, use `for` with `range()`:\n\n```python\nfor i in range(5):\n    print(\"Lap\", i)\n```\n\nThis runs the body 5 times, with `i` taking each value: 0, 1, 2, 3, 4. Important: **range(5) starts at 0** and does not include 5. `range(2, 5)` starts at 2 and stops before 5 (2, 3, 4). `range(0, 10, 2)` counts in steps: 0, 2, 4, 6, 8.\n\n`i` is a normal variable - you can use it, and you can name it anything (`for lap in range(5):`)."
+        },
+        {
+          "heading": "Looping over sequences",
+          "body": "`for` also walks through any sequence item by item:\n\n```python\nfor letter in \"abc\":\n    print(letter)\n\nfor name in [\"Ada\", \"Grace\", \"Alan\"]:\n    print(\"Hello,\", name)\n```\n\nThis reads naturally: *for each letter in the string... for each name in the list...* The loop variable takes each value in turn. Lists get a full lesson soon - here you just need the idea of \"for each item\"."
+        },
+        {
+          "heading": "while loops",
+          "body": "Use `while` when you do not know how many repetitions are needed - repeat **as long as** a condition stays True:\n\n```python\ncount = 3\nwhile count > 0:\n    print(count)\n    count = count - 1\nprint(\"Liftoff!\")\n```\n\nThe loop prints 3, 2, 1, then Liftoff. The critical pattern: something inside the loop must eventually make the condition false. If nothing changes, you get an **infinite loop** - the program runs until you force it to stop. If a loop of yours never ends, ask: *which line changes the condition?*"
+        },
+        {
+          "heading": "break and continue",
+          "body": "`break` exits the loop immediately; `continue` skips to the next round:\n\n```python\nfor n in range(10):\n    if n == 3:\n        continue   # skip 3\n    if n == 6:\n        break      # stop completely\n    print(n)\n```\n\nThis prints 0, 1, 2, 4, 5 - and stops at 6."
+        }
+      ],
+      "example": {
+        "title": "Countdown and sum",
+        "code": "# Sum the numbers 1..10 with a loop\ntotal = 0\nfor n in range(1, 11):\n    total = total + n\nprint(\"Sum of 1..10 is\", total)\n\n# Keep asking until the answer is correct\nsecret = 7\nwhile True:\n    guess = int(input(\"Guess (1-10)? \"))\n    if guess == secret:\n        print(\"Correct! It was\", secret)\n        break\n    print(\"Nope, try again...\")",
+        "explanation": "The first loop accumulates: each round adds n to total (1+2+...+10 = 55). The second uses `while True` with a `break` - a standard pattern for \"loop until success\". The break is the only way out, so it must be reachable.\n\n(For the sum, `total = total + n` is also written `total += n` - a shortcut you will see everywhere.)"
+      },
+      "quiz": [
+        {
+          "id": "q1",
+          "question": "How many times does the body of `for i in range(3):` run?",
+          "options": ["2", "3", "4", "Forever"],
+          "answer": 1,
+          "explanation": "range(3) produces 0, 1, 2 - three values, so the body runs three times, with i starting at 0."
+        },
+        {
+          "id": "q2",
+          "question": "What is the danger in this code?\n```python\nx = 10\nwhile x > 0:\n    print(x)\n```",
+          "options": ["It prints nothing", "It is an infinite loop - nothing ever decreases x", "It stops after 10 lines", "x becomes negative"],
+          "answer": 1,
+          "explanation": "Nothing inside the loop changes x, so the condition never becomes False. The fix: add `x = x - 1` inside the loop."
+        }
+      ],
+      "exercise": {
+        "kind": "write_program",
+        "title": "Countdown, then blastoff",
+        "prompt": "Write a program that prints the numbers 5, 4, 3, 2, 1 - each on its own line - and then prints exactly `Blastoff!` on the last line. Use a loop, not five copy-pasted print statements.",
+        "difficulty": 2,
+        "starter_code": "# Count down from 5, then announce blastoff\n",
+        "test_spec": {"type": "stdout", "cases": [{"stdin": "", "expected_output": "5\n4\n3\n2\n1\nBlastoff!"}]},
+        "hints": [
+          "You need to count DOWN: start at 5 and reach 1. range() has three arguments - start, stop, step.",
+          "`range(5, 0, -1)` produces 5, 4, 3, 2, 1 - start 5, stop before 0, step -1.",
+          "Loop with `for n in range(5, 0, -1):` and print n inside; the final print(\"Blastoff!\") goes AFTER the loop (unindented)."
+        ],
+        "solution": {"code": "# Count down from 5, then announce blastoff\nfor n in range(5, 0, -1):\n    print(n)\nprint(\"Blastoff!\")", "explanation": "range(5, 0, -1) gives 5, 4, 3, 2, 1 - the stop value 0 is excluded, and the step -1 counts downward. The loop prints each number; `print(\"Blastoff!\")` sits outside the loop (no indentation) so it runs exactly once after the loop ends. This is the pattern all countdown tasks follow."}
+      }
+    }
+  ]
+}
